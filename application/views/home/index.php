@@ -19,10 +19,11 @@
         }
 
         .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-        }
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start; /* 🔥 ganti ini */
+    padding-top: 60px; /* 🔥 biar lega atasnya */
+}
 
         .logo {
             width: 70px;
@@ -59,11 +60,11 @@
         }
 
         .glass-box {
-            background: rgba(255,255,255,0.08);
-            border-radius: 12px;
-            backdrop-filter: blur(10px);
-            padding: 20px;
-        }
+    background: rgba(255,255,255,0.08);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    padding: 30px 20px; /* 🔥 atas diperbesar */
+}
 
         .sambutan {
             font-size: 14px;
@@ -148,6 +149,14 @@
     50% { transform: scale(1.08); }
     100% { transform: scale(1); }
 }
+.foto-kepsek {
+    width: 120px;
+    height: 140px; /* 🔥 agak lonjong */
+    object-fit: cover;
+    object-position: center top;
+    border-radius: 12px; /* bukan bulat lagi */
+    border: 3px solid rgba(255,255,255,0.6);
+}
     </style>
 </head>
 
@@ -166,7 +175,7 @@
         <div class="col-lg-6">
 
             <!-- LOGO (optional) -->
-            <!-- <img src="<?= base_url('assets/logo.png') ?>" class="logo"> -->
+            <!-- <img src="<?= base_url('assets/logobonti.png') ?>" class="logo"> -->
 
             <!-- TITLE -->
             <h1 class="title">
@@ -211,25 +220,27 @@
             </div>
 
             <!-- SAMBUTAN -->
-            <div class="glass-box text-left">
+            <div class="glass-box text-center">
 
-                <small class="text-uppercase d-block mb-2">Sambutan Kepala Sekolah</small>
+    <!-- FOTO KEPALA SEKOLAH -->
+    <img src="<?= base_url('assets/ksrsd.png') ?>" class="foto-kepsek mb-3">
 
-                <div class="divider"></div>
+    <small class="text-uppercase d-block mb-2">Sambutan Kepala Sekolah</small>
 
-                <div id="sambutanText" class="sambutan sambutan-collapsed">
-    <?= $sambutan ? nl2br($sambutan) : 'Sambutan belum diisi.' ?>
+    <div class="divider"></div>
+
+    <div id="sambutanText" class="sambutan sambutan-collapsed text-left">
+        <?= $sambutan ? nl2br($sambutan) : 'Sambutan belum diisi.' ?>
+    </div>
+
+    <div class="text-center mt-2">
+        <button onclick="toggleSambutan(this)" 
+                class="btn btn-light btn-sm">
+            Lihat Selengkapnya
+        </button>
+    </div>
+
 </div>
-
-<div class="text-center mt-2">
-    <button onclick="toggleSambutan(this)" 
-            class="btn btn-light btn-sm">
-        Lihat Selengkapnya
-    </button>
-</div>
-
-            </div>
-
         </div>
     </div>
 

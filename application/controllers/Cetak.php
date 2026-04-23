@@ -33,14 +33,14 @@ if(!$data['siswa']){
 }
 
 // 🔥 BLOCK CETAK JIKA BELUM VERIFIKASI
-if($data['siswa']->status_verifikasi != 'diterima'){
+// if($data['siswa']->status_verifikasi != 'diterima'){
     
-    $this->session->set_flashdata('error',
-        'SKL belum bisa dicetak. Menunggu verifikasi admin.'
-    );
+//     $this->session->set_flashdata('error',
+//         'SKL belum bisa dicetak. Menunggu verifikasi admin.'
+//     );
 
-    redirect('kelulusan');
-}
+//     redirect('kelulusan');
+// }
 
         // ======================
         // 🔥 AMBIL TEMPLATE SKL

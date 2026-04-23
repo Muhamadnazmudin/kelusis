@@ -74,6 +74,28 @@ tr {
     vertical-align: middle;
     width: 40px;
 }
+/* E-SIGN */
+.ttd-box {
+    border: 0.5px solid #777;
+    border-radius: 18px;
+    padding: 5px 10px;
+    width: 230px;
+    font-size: 8px;
+}
+
+.ttd-flex {
+    display: flex;
+    align-items: center;
+}
+
+.ttd-logo {
+    width: 60px;
+    margin-right: 10px;
+}
+
+.ttd-text {
+    font-size: 11px;
+}
 </style>
 
 <!-- ================= HEADER ================= -->
@@ -134,14 +156,80 @@ if(file_exists($foto_path)){
 <?php endif; ?>
     </td>
 
-    <td style="text-align:left; padding-left:200px;">
+    <td style="text-align:left; padding-left:150px;">
+
+    <div style="margin-bottom:10px;">
         <?= $template->tempat_tanggal ?><br>
-        <?= $template->jabatan ?>
+        <?= ucwords(strtolower($template->jabatan)) ?>
+    </div>
 
-        <div class="spasi-ttd"></div>
+    <div class="ttd-box">
 
-        <b><?= $template->nama_penandatangan ?></b><br>
-        NIP. <?= $template->nip ?>
-    </td>
+        <table width="100%">
+        <tr>
+
+        <td width="50" valign="top">
+        <?php
+        $logo_path = FCPATH.'uploads/logo_ttd.png';
+        $base64_logo = '';
+
+        if(file_exists($logo_path)){
+            $type = pathinfo($logo_path, PATHINFO_EXTENSION);
+            $data = file_get_contents($logo_path);
+            $base64_logo = 'data:image/'.$type.';base64,'.base64_encode($data);
+        }
+        ?>
+
+        <?php if($base64_logo): ?>
+            <img src="<?= $base64_logo ?>" style="width:45px;">
+        <?php endif; ?>
+        </td>
+
+        <td valign="top">
+
+            <div style="font-size:9px;">
+                Ditandatangani secara elektronik oleh:<br>
+                <?= $template->jabatan ?>
+            </div>
+
+            <br><br><br>
+
+            <?= $template->nama_penandatangan ?><br>
+            <?= $template->nip ?>
+
+        </td>
+
+        </tr>
+        </table>
+
+    </div>
+
+</td>
+<div style="position:absolute; bottom:-25px; left:40px; text-align:center;">
+
+<?php
+$qr_path = FCPATH.'uploads/qr.png'; // 🔥 file QR kamu
+$base64_qr = '';
+
+if(file_exists($qr_path)){
+    $type = pathinfo($qr_path, PATHINFO_EXTENSION);
+    $data = file_get_contents($qr_path);
+    $base64_qr = 'data:image/'.$type.';base64,'.base64_encode($data);
+}
+?>
+
+<?php if($base64_qr): ?>
+    <img src="<?= $base64_qr ?>" width="60"><br>
+<?php endif; ?>
+
+
+</div>
+
+
+<div style="position:absolute; bottom:-15px; left:140px; right:40px; font-size:10px; text-align:center;">
+Dokumen ini telah ditandatangani secara elektronik menggunakan sertifikat elektronik yang diterbitkan oleh Balai Besar
+Sertifikasi Elektronik (BSrE) Badan Siber dan Sandi Negara. Dokumen digital yang asli dapat diperoleh dengan memindai QR Code
+atau memasukkan kode pada Aplikasi NDE Pemerintah Daerah Provinsi Jawa Barat.
+</div>
 </tr>
 </table>

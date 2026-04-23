@@ -8,12 +8,29 @@
     </a>
 
     <!-- Kanan -->
-    <a href="<?= base_url('kelulusan/print_all') ?>" 
-       class="btn btn-success"
-       target="_blank">
-        <i class="fa fa-print"></i> Print Semua SKL
-    </a>
+    <div class="d-flex gap-2">
 
+        <a href="<?= base_url('kelulusan/print_all') ?>" 
+           class="btn btn-success"
+           target="_blank">
+            <i class="fa fa-print"></i> Print Semua
+        </a>
+
+        <!-- 🔥 DROPDOWN KELAS -->
+        <select class="form-control" style="width:200px;"
+            onchange="if(this.value) window.open(this.value,'_blank')">
+
+            <option value="">🖨️ Print per Kelas</option>
+
+            <?php foreach($kelas as $kls): ?>
+                <option value="<?= base_url('kelulusan/print_by_kelas/'.$kls->id) ?>">
+                    <?= $kls->nama_kelas ?>
+                </option>
+            <?php endforeach; ?>
+
+        </select>
+
+    </div>
 </div>
 <table class="table table-bordered">
     <tr>

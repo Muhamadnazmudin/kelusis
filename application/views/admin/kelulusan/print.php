@@ -68,6 +68,12 @@ tr {
 .spasi-ttd {
     height: 60px;
 }
+/* KOLOM NOMOR */
+.no {
+    text-align: center;
+    vertical-align: middle;
+    width: 40px;
+}
 </style>
 
 <!-- ================= HEADER ================= -->

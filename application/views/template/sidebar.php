@@ -94,13 +94,13 @@
     <!-- 🔹 SYSTEM -->
 <div class="sidebar-heading">System</div>
 
-<li class="nav-item <?= in_array($uri, ['pengaturan','user','reset']) ? 'active' : '' ?>">
+<li class="nav-item <?= in_array($uri, ['pengaturan','user','reset','backup']) ? 'active' : '' ?>">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#systemMenu">
         <i class="fas fa-cogs"></i>
         <span>Pengaturan</span>
     </a>
 
-    <div id="systemMenu" class="collapse <?= in_array($uri, ['pengaturan','user','reset']) ? 'show' : '' ?>">
+    <div id="systemMenu" class="collapse <?= in_array($uri, ['pengaturan','user','reset','backup']) ? 'show' : '' ?>">
         <div class="bg-white py-2 collapse-inner rounded">
 
             <a class="collapse-item <?= $uri=='pengaturan'?'active':'' ?>" href="<?= base_url('pengaturan') ?>">
@@ -110,12 +110,14 @@
             <a class="collapse-item <?= $uri=='user'?'active':'' ?>" href="<?= base_url('user') ?>">
                 Manajemen User
             </a>
-
+            <a class="collapse-item <?= $uri=='backup'?'active':'' ?>" href="<?= base_url('backup') ?>">
+                Backup & Restore
+            </a>
             <!-- 🔥 TAMBAHAN RESET -->
             <a class="collapse-item <?= $uri=='reset'?'active text-danger':'' ?>" href="<?= base_url('reset') ?>">
                 🔥 Reset Data
             </a>
-
+                
         </div>
     </div>
 </li>

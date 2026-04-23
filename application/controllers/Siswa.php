@@ -16,15 +16,74 @@ class Siswa extends CI_Controller {
     // LIST DATA
     // ======================
     public function index()
-    {
-        $this->db->select('siswa.*, kelas.nama_kelas, tahun_ajaran.tahun');
-        $this->db->join('kelas','kelas.id=siswa.id_kelas','left');
-        $this->db->join('tahun_ajaran','tahun_ajaran.id=siswa.id_tahun','left');
+{
+    $this->load->library('pagination');
 
-        $data['siswa'] = $this->db->get('siswa')->result();
+    $keyword = $this->input->get('keyword');
 
-        template('admin/siswa/index', $data);
+    // ======================
+    // 🔥 BASE QUERY
+    // ======================
+    $this->db->select('siswa.*, kelas.nama_kelas, tahun_ajaran.tahun');
+    $this->db->from('siswa');
+    $this->db->join('kelas','kelas.id=siswa.id_kelas','left');
+    $this->db->join('tahun_ajaran','tahun_ajaran.id=siswa.id_tahun','left');
+
+    if($keyword){
+        $this->db->like('siswa.nama', $keyword);
     }
+
+    // ======================
+    // 🔥 TOTAL DATA
+    // ======================
+    $total = $this->db->count_all_results('', false);
+
+    // ======================
+    // 🔥 CONFIG PAGINATION
+    // ======================
+    $config['base_url'] = base_url('siswa/index');
+    $config['total_rows'] = $total;
+    $config['per_page'] = 10;
+    $config['page_query_string'] = true;
+    $config['query_string_segment'] = 'page';
+
+    // optional biar cakep (bootstrap)
+    $config['full_tag_open'] = '<nav><ul class="pagination">';
+    $config['full_tag_close'] = '</ul></nav>';
+
+    $config['first_link'] = 'First';
+    $config['last_link'] = 'Last';
+
+    $config['next_link'] = '»';
+    $config['prev_link'] = '«';
+
+    $config['cur_tag_open'] = '<li class="page-item active"><span class="page-link">';
+    $config['cur_tag_close'] = '</span></li>';
+
+    $config['num_tag_open'] = '<li class="page-item">';
+    $config['num_tag_close'] = '</li>';
+
+    $config['attributes'] = ['class' => 'page-link'];
+
+    $this->pagination->initialize($config);
+
+    // ======================
+    // 🔥 LIMIT DATA
+    // ======================
+    $page = $this->input->get('page') ?? 0;
+
+    $this->db->limit($config['per_page'], $page);
+
+    // ======================
+    // 🔥 RESULT
+    // ======================
+    $data['siswa'] = $this->db->get()->result();
+    $data['pagination'] = $this->pagination->create_links();
+    $data['keyword'] = $keyword;
+    $data['total'] = $total;
+
+    template('admin/siswa/index', $data);
+}
 
     // ======================
     // TAMBAH
@@ -265,5 +324,90 @@ public function view($id)
         ->row();
 
     template('admin/siswa/view', $data);
+}
+public function export_excel()
+{
+    // 🔥 bersihin output biar ga error header
+    while (ob_get_level()) {
+        ob_end_clean();
+    }
+
+    header("Content-Type: application/vnd.ms-excel");
+    header("Content-Disposition: attachment; filename=DATA_SISWA_LENGKAP.xls");
+    header("Pragma: no-cache");
+    header("Expires: 0");
+
+    // ambil keyword (optional search)
+    $keyword = $this->input->get('keyword');
+
+    $this->db->select('
+        siswa.*,
+        kelas.nama_kelas,
+        kelas.id as id_kelas,
+        tahun_ajaran.tahun
+    ');
+    $this->db->from('siswa');
+    $this->db->join('kelas','kelas.id=siswa.id_kelas','left');
+    $this->db->join('tahun_ajaran','tahun_ajaran.id=siswa.id_tahun','left');
+
+    if($keyword){
+        $this->db->like('siswa.nama', $keyword);
+    }
+
+    $data = $this->db->get()->result();
+
+    // ======================
+    // 🔥 HEADER TABLE
+    // ======================
+    echo "
+    <table border='1'>
+        <tr style='background:#4e73df; color:#fff; text-align:center;'>
+            <th>No</th>
+            <th>NISN</th>
+            <th>NIS</th>
+            <th>Nama</th>
+            <th>Jenis Kelamin</th>
+            <th>Tempat Lahir</th>
+            <th>Tanggal Lahir</th>
+            <th>Orang Tua</th>
+            <th>Jurusan</th>
+            <th>Kelas</th>
+            <th>ID Kelas</th>
+        </tr>
+    ";
+
+    $no = 1;
+
+    foreach($data as $s){
+
+        // 🔥 FORMAT JK
+        $jk = ($s->jenis_kelamin == 'L') ? 'L' : 'P';
+
+        // 🔥 FORMAT TANGGAL (YYYY-MM-DD)
+        $tgl = date('Y-m-d', strtotime($s->tanggal_lahir));
+
+        echo "<tr>
+            <td>".$no++."</td>
+
+            <!-- 🔥 NISN AMAN -->
+            <td style=\"mso-number-format:'\\@'\">".$s->nisn."</td>
+
+            <!-- 🔥 NIS AMAN -->
+            <td style=\"mso-number-format:'\\@'\">".$s->nis."</td>
+
+            <td>".$s->nama."</td>
+            <td>".$jk."</td>
+            <td>".$s->tempat_lahir."</td>
+            <td>".$tgl."</td>
+            <td>".$s->nama_ortu."</td>
+            <td>".$s->jurusan."</td>
+            <td>".$s->nama_kelas."</td>
+            <td>".$s->id_kelas."</td>
+        </tr>";
+    }
+
+    echo "</table>";
+
+    exit;
 }
 }

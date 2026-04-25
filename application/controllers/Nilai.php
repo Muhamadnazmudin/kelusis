@@ -51,6 +51,20 @@ class Nilai extends CI_Controller {
     $data['title'] = 'Nilai';
     $data['nilai'] = $data_nilai;
     $data['mapel'] = $this->db->get('mata_pelajaran')->result();
+    foreach($data_nilai as $id => $d){
+
+    $total = 0;
+    $jumlah = 0;
+
+    foreach($mapel = $this->db->get('mata_pelajaran')->result() as $m){
+        if(isset($d[$m->id])){
+            $total += $d[$m->id];
+            $jumlah++;
+        }
+    }
+
+    $data_nilai[$id]['rata2'] = $jumlah ? round($total / $jumlah, 2) : 0;
+}
 
     template('admin/nilai/index', $data);
 }
@@ -92,6 +106,19 @@ class Nilai extends CI_Controller {
     $data['mapel'] = $this->db->get('mata_pelajaran')->result();
 
     template('admin/nilai/tambah', $data);
+}
+public function edit($id)
+{
+    $data['siswa'] = $this->db->get_where('siswa', ['id'=>$id])->row();
+    $data['mapel'] = $this->db->get('mata_pelajaran')->result();
+    $data['nilai'] = $this->db->get_where('nilai', ['siswa_id'=>$id])->result();
+
+    template('admin/nilai/edit', $data);
+}
+public function hapus($id)
+{
+    $this->db->delete('nilai', ['siswa_id'=>$id]);
+    redirect('nilai');
 }
 public function import()
 {

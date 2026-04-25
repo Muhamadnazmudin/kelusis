@@ -143,12 +143,12 @@ foreach($grouped as $kelompok => $mapels){
     }
 }
 
-$rata = $jumlah ? round($total/$jumlah,2) : 0;
+$rata = $jumlah ? ($total/$jumlah) : 0;
 
 $html_nilai .= '
 <tr>
 <td colspan="2" align="center"><b>Rata-rata</b></td>
-<td align="center"><b>'.$rata.'</b></td>
+<td align="center"><b>'.number_format($rata, 2).'</b></td>
 </tr>
 </table>';
 

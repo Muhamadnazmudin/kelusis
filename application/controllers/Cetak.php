@@ -187,7 +187,7 @@ $data['k'] = $data['siswa'];
         $dompdf->render();
 
         // tampilkan di browser
-        $dompdf->stream("SKL-".$data['siswa']->nisn.".pdf", [
+        $dompdf->stream("SKL-".$data['siswa']->nama.".pdf", [
             "Attachment" => false
         ]);
     }

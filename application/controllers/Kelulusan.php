@@ -229,7 +229,7 @@ function tgl_indo($tanggal){
     $dompdf->setPaper('F4', 'portrait');
     $dompdf->render();
 
-    $dompdf->stream("SKL_".$data['k']->nisn.".pdf", ["Attachment"=>false]);
+    $dompdf->stream("SKL_".$data['k']->nama.".pdf", ["Attachment"=>false]);
 }
 public function print_all()
 {

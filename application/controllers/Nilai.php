@@ -109,9 +109,50 @@ class Nilai extends CI_Controller {
 }
 public function edit($id)
 {
+    // 🔥 PROSES SIMPAN
+    if($_POST){
+
+        $mapel = $this->db->get('mata_pelajaran')->result();
+
+        foreach($mapel as $m){
+
+            $nilai = $this->input->post('nilai_'.$m->id);
+
+            // cek apakah sudah ada
+            $cek = $this->db->get_where('nilai', [
+                'siswa_id' => $id,
+                'mapel_id' => $m->id
+            ])->row();
+
+            if($cek){
+                $this->db->where('id', $cek->id)->update('nilai', [
+                    'nilai' => $nilai
+                ]);
+            } else {
+                $this->db->insert('nilai', [
+                    'siswa_id' => $id,
+                    'mapel_id' => $m->id,
+                    'nilai' => $nilai
+                ]);
+            }
+        }
+
+        redirect('nilai'); // balik ke tabel
+    }
+
+    // ======================
+    // 🔥 AMBIL DATA UNTUK EDIT
+    // ======================
+    $nilai_db = $this->db->get_where('nilai', ['siswa_id'=>$id])->result();
+
+    $nilai_map = [];
+    foreach($nilai_db as $n){
+        $nilai_map[$n->mapel_id] = $n->nilai;
+    }
+
+    $data['nilai_map'] = $nilai_map;
     $data['siswa'] = $this->db->get_where('siswa', ['id'=>$id])->row();
     $data['mapel'] = $this->db->get('mata_pelajaran')->result();
-    $data['nilai'] = $this->db->get_where('nilai', ['siswa_id'=>$id])->result();
 
     template('admin/nilai/edit', $data);
 }

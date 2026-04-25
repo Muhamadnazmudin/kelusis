@@ -96,8 +96,19 @@ tr {
 .ttd-text {
     font-size: 11px;
 }
+.watermark-text {
+    position: fixed;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-30deg);
+    font-size: 100px;
+    color: #370303;
+    opacity: 0.08;
+    z-index: 0;
+    white-space: nowrap;
+}
 </style>
-
+<div class="watermark-text">DRAFT</div>
 <!-- ================= HEADER ================= -->
 <div class="center">
 

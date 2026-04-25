@@ -18,7 +18,7 @@ body {
 }
 
 .judul-utama {
-    color: #c0392b;
+    color: #444;
     font-weight: bold;
     text-align: center;
     margin-bottom: 10px;
@@ -110,7 +110,10 @@ if(isset($siswa->tanggal_lahir)){
 
     $tgl = strtr($tgl, $bulan);
 
-    $ttl = (isset($siswa->tempat_lahir) ? $siswa->tempat_lahir : '-') . ', ' . $tgl;
+    $tempat = isset($siswa->tempat_lahir) ? strtolower($siswa->tempat_lahir) : '-';
+$tempat = ucwords($tempat);
+
+$ttl = $tempat . ', ' . $tgl;
 } else {
     $ttl = '-';
 }

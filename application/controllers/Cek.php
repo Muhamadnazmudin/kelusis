@@ -15,9 +15,19 @@ class Cek extends CI_Controller {
 
     $nisn = $this->session->userdata('nisn');
 
-    $data['siswa'] = $this->db->get_where('siswa', [
+    $siswa = $this->db->get_where('siswa', [
         'nisn'=>$nisn
     ])->row();
+
+    // 🔥 VALIDASI WAJIB
+    if(!$siswa){
+        $this->session->set_flashdata('error','Data siswa tidak ditemukan!');
+        $this->session->sess_destroy(); // logout sekalian
+        redirect('login');
+        return;
+    }
+
+    $data['siswa'] = $siswa;
 
     $this->load->view('siswa/dashboard', $data);
 }
@@ -33,7 +43,29 @@ class Cek extends CI_Controller {
 
     $data['siswa'] = $this->db->get()->row();
 
-    
+    if(!$data['siswa']){
+        $this->session->set_flashdata('error','Data siswa tidak ditemukan!');
+        redirect('login');
+        return;
+    }
+
+    // ======================
+    // 🔥 TAMBAHAN LOG (AMAN - TIDAK MENGUBAH LOGIKA ASLI)
+    // ======================
+    $cek_log = $this->db->get_where('log_cek', [
+        'nisn' => $data['siswa']->nisn
+    ])->row();
+
+    if(!$cek_log){
+        $this->db->insert('log_cek', [
+            'nisn'       => $data['siswa']->nisn,
+            'nama'       => $data['siswa']->nama,
+            'waktu'      => date('Y-m-d H:i:s'),
+            'ip_address' => $this->input->ip_address()
+        ]);
+    }
+    // ======================
+
     $data['sekolah'] = $this->db->get('sekolah')->row();
 
     $this->load->view('siswa/hasil', $data);
@@ -54,7 +86,29 @@ class Cek extends CI_Controller {
 
     $data['siswa'] = $this->db->get()->row();
 
-    
+    if(!$data['siswa']){
+        $this->session->set_flashdata('error','Data siswa tidak ditemukan!');
+        redirect('login');
+        return;
+    }
+
+    // ======================
+    // 🔥 TAMBAHAN LOG (PENTING)
+    // ======================
+    $cek_log = $this->db->get_where('log_cek', [
+        'nisn' => $data['siswa']->nisn
+    ])->row();
+
+    if(!$cek_log){
+        $this->db->insert('log_cek', [
+            'nisn'       => $data['siswa']->nisn,
+            'nama'       => $data['siswa']->nama,
+            'waktu'      => date('Y-m-d H:i:s'),
+            'ip_address' => $this->input->ip_address()
+        ]);
+    }
+    // ======================
+
     $data['sekolah'] = $this->db->get('sekolah')->row();
 
     $this->load->view('siswa/hasil', $data);

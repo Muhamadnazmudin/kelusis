@@ -46,6 +46,35 @@
                 font-size: 18px;
             }
         }
+        .logo-login {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    margin-bottom: 10px;
+}
+
+.login-card {
+    border-radius: 18px;
+    overflow: hidden;
+}
+
+/* efek hover halus */
+.login-card:hover {
+    transform: translateY(-3px);
+    transition: 0.3s;
+}
+
+/* background lebih halus */
+body.bg-gradient-primary {
+    background: linear-gradient(135deg, #4e73df, #224abe);
+}
+.card {
+    border: none;
+}
+
+.card-body {
+    padding: 35px 30px;
+}
     </style>
 </head>
 
@@ -58,7 +87,14 @@
             <div class="card shadow-lg login-card">
                 <div class="card-body p-4">
 
-                    <h4 class="text-center mb-4">Login Kelusis</h4>
+                    <div class="text-center mb-3">
+                        <img src="<?= base_url('assets/logobonti.png') ?>" class="logo-login">
+                    </div>
+
+                    <h4 class="text-center mb-1">Login Kelusis</h4>
+                    <small class="text-muted d-block text-center mb-4">
+                        Sistem Kelulusan Siswa
+                    </small>
 
                     <!-- ERROR -->
                     <?php if($this->session->flashdata('error')): ?>

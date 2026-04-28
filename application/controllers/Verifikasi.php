@@ -58,7 +58,7 @@ class Verifikasi extends CI_Controller {
     {
         $siswa = $this->db->get_where('siswa',['id'=>$id])->row();
 
-        // 🔥 hapus file bukti
+        //  hapus file bukti
         if(!empty($siswa->bukti_upload)){
             $path = FCPATH.'uploads/bukti/'.$siswa->bukti_upload;
 
@@ -77,7 +77,7 @@ class Verifikasi extends CI_Controller {
     }
 
     // ======================
-    // 🔥 BULK ACTION
+    //  BULK ACTION
     // ======================
     public function bulk()
     {

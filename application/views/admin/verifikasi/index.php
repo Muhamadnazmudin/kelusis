@@ -17,7 +17,7 @@
 <div class="card shadow-sm">
     <div class="card-body">
 
-        <!-- 🔥 BULK ACTION -->
+        <!--  BULK ACTION -->
         <form method="post" action="<?= base_url('verifikasi/bulk') ?>" 
               onsubmit="return confirm('Proses data yang dipilih?')">
 
@@ -166,7 +166,7 @@
 </div>
 
 
-<!-- 🔥 SCRIPT CHECK ALL -->
+<!--  SCRIPT CHECK ALL -->
 <script>
 document.getElementById('checkAll').onclick = function() {
     let items = document.querySelectorAll('.check-item');

@@ -75,7 +75,7 @@
 
 </div>
 
-<!-- 🔥 LOADING OVERLAY -->
+<!--  LOADING OVERLAY -->
 <div id="loadingRestore" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:9999; text-align:center; color:#fff;">
     <div style="position:relative; top:40%;">
         <h4>⏳ Sedang restore database...</h4>
@@ -93,7 +93,7 @@ document.getElementById('formRestore').addEventListener('submit', function(e){
         return false;
     }
 
-    // 🔥 tampilkan loading
+    //  tampilkan loading
     document.getElementById('loadingRestore').style.display = 'block';
 });
 </script>

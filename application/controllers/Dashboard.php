@@ -34,7 +34,7 @@ class Dashboard extends CI_Controller {
         ->count_all_results('kelulusan');
 
     // ======================
-    // 🔥 VERIFIKASI
+    //  VERIFIKASI
     // ======================
     $data['total_pending'] = $this->db
         ->where('status_verifikasi','pending')
@@ -84,7 +84,7 @@ public function reset_log()
         redirect('login');
     }
 
-    // 🔥 HAPUS SEMUA LOG
+    //  HAPUS SEMUA LOG
     $this->db->truncate('log_cek');
 
     $this->session->set_flashdata('success','Log cek kelulusan berhasil direset');

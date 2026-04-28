@@ -37,7 +37,7 @@ thead th {
     </a>
 </div>
 
-<!-- 🔥 FILTER & SEARCH -->
+<!--  FILTER & SEARCH -->
 <div class="row mb-3">
     <div class="col-md-3">
         <select id="filterKelas" class="form-control">
@@ -100,14 +100,14 @@ thead th {
                     <td><?= $val ?? '-' ?></td>
                 <?php endforeach; ?>
 
-                <!-- 🔥 RATA-RATA -->
+                <!--  RATA-RATA -->
                 <td>
                     <b>
                     <?= $jumlah ? number_format($total / $jumlah, 2) : '0.00' ?>
                     </b>
                 </td>
 
-                <!-- 🔥 AKSI -->
+                <!--  AKSI -->
                 <td>
                     <a href="<?= base_url('nilai/edit/'.$id) ?>" class="btn btn-warning btn-sm">
                         Edit
@@ -132,7 +132,7 @@ thead th {
 </table>
 </div>
 
-<!-- 🔥 SCRIPT FILTER -->
+<!--  SCRIPT FILTER -->
 <script>
 document.getElementById('filterKelas').addEventListener('change', filterTable);
 document.getElementById('searchNama').addEventListener('keyup', filterTable);
@@ -143,7 +143,7 @@ function filterTable() {
 
     let rows = document.querySelectorAll("tbody tr");
 
-    let no = 1; // 🔥 reset nomor
+    let no = 1; //  reset nomor
 
     rows.forEach(row => {
         let tdNama = row.children[1].innerText.toLowerCase();
@@ -156,7 +156,7 @@ function filterTable() {
 
         if(show){
             row.style.display = "";
-            row.children[0].innerText = no++; // 🔥 update nomor
+            row.children[0].innerText = no++; //  update nomor
         } else {
             row.style.display = "none";
         }

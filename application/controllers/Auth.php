@@ -46,7 +46,7 @@ class Auth extends CI_Controller {
 
         if(password_verify($password, $user->password)){
 
-            // 🔥 AMBIL WAKTU PENGUMUMAN
+            //  AMBIL WAKTU PENGUMUMAN
             $pengumuman = $this->db->get_where('pengaturan', [
                 'nama_pengaturan'=>'tanggal_pengumuman'
             ])->row();
@@ -67,7 +67,7 @@ class Auth extends CI_Controller {
                 'nisn' => $user->nisn
             ]);
 
-            // 🔥 REDIRECT SESUAI ROLE
+            //  REDIRECT SESUAI ROLE
             if($user->role == 'admin'){
                 redirect('admin');
             } else {

@@ -22,7 +22,7 @@ class Siswa extends CI_Controller {
     $keyword = $this->input->get('keyword');
 
     // ======================
-    // 🔥 BASE QUERY
+    //  BASE QUERY
     // ======================
     $this->db->select('siswa.*, kelas.nama_kelas, tahun_ajaran.tahun');
     $this->db->from('siswa');
@@ -34,12 +34,12 @@ class Siswa extends CI_Controller {
     }
 
     // ======================
-    // 🔥 TOTAL DATA
+    //  TOTAL DATA
     // ======================
     $total = $this->db->count_all_results('', false);
 
     // ======================
-    // 🔥 CONFIG PAGINATION
+    //  CONFIG PAGINATION
     // ======================
     $config['base_url'] = base_url('siswa/index');
     $config['total_rows'] = $total;
@@ -68,14 +68,14 @@ class Siswa extends CI_Controller {
     $this->pagination->initialize($config);
 
     // ======================
-    // 🔥 LIMIT DATA
+    //  LIMIT DATA
     // ======================
     $page = $this->input->get('page') ?? 0;
 
     $this->db->limit($config['per_page'], $page);
 
     // ======================
-    // 🔥 RESULT
+    //  RESULT
     // ======================
     $data['siswa'] = $this->db->get()->result();
     $data['pagination'] = $this->pagination->create_links();
@@ -94,7 +94,7 @@ class Siswa extends CI_Controller {
 
         $nisn = $this->input->post('nisn');
 
-        // 🔥 CEK DULU SEBELUM INSERT
+        //  CEK DULU SEBELUM INSERT
         $cek = $this->db->get_where('siswa', ['nisn'=>$nisn])->row();
         if($cek){
             $this->session->set_flashdata('error','NISN sudah terdaftar');
@@ -126,10 +126,10 @@ class Siswa extends CI_Controller {
     'rata_nilai' => $this->input->post('rata_nilai'),
     'id_kelas' => $this->input->post('kelas'),
     'id_tahun' => $this->input->post('tahun'),
-    'foto' => $foto // 🔥 INI YANG KURANG
+    'foto' => $foto //  INI YANG KURANG
 ]);
 
-        // 🔥 AMBIL ID SETELAH INSERT
+        //  AMBIL ID SETELAH INSERT
         $id_siswa = $this->db->insert_id();
 
         // 🧪 DEBUG (boleh test dulu)
@@ -146,7 +146,7 @@ class Siswa extends CI_Controller {
         ]);
 
         // ======================
-        // 🔥 AMBIL TANGGAL
+        //  AMBIL TANGGAL
         // ======================
         $tgl = $this->db
             ->get_where('pengaturan', ['nama_pengaturan' => 'tanggal_pengumuman'])
@@ -157,7 +157,7 @@ class Siswa extends CI_Controller {
             : date('Y-m-d');
 
         // ======================
-        // 🔥 INSERT KELULUSAN
+        //  INSERT KELULUSAN
         // ======================
         $this->db->insert('kelulusan', [
             'id_siswa' => $id_siswa,
@@ -217,7 +217,7 @@ class Siswa extends CI_Controller {
             'rata_nilai' => $this->input->post('rata_nilai'),
             'id_kelas' => $this->input->post('kelas'),
             'id_tahun' => $this->input->post('tahun'),
-            'foto' => $foto // 🔥 WAJIB
+            'foto' => $foto //  WAJIB
         ]);
 
         redirect('siswa');
@@ -327,7 +327,7 @@ public function view($id)
 }
 public function export_excel()
 {
-    // 🔥 bersihin output biar ga error header
+    //  bersihin output biar ga error header
     while (ob_get_level()) {
         ob_end_clean();
     }
@@ -357,7 +357,7 @@ public function export_excel()
     $data = $this->db->get()->result();
 
     // ======================
-    // 🔥 HEADER TABLE
+    //  HEADER TABLE
     // ======================
     echo "
     <table border='1'>
@@ -380,19 +380,19 @@ public function export_excel()
 
     foreach($data as $s){
 
-        // 🔥 FORMAT JK
+        //  FORMAT JK
         $jk = ($s->jenis_kelamin == 'L') ? 'L' : 'P';
 
-        // 🔥 FORMAT TANGGAL (YYYY-MM-DD)
+        //  FORMAT TANGGAL (YYYY-MM-DD)
         $tgl = date('Y-m-d', strtotime($s->tanggal_lahir));
 
         echo "<tr>
             <td>".$no++."</td>
 
-            <!-- 🔥 NISN AMAN -->
+            <!--  NISN AMAN -->
             <td style=\"mso-number-format:'\\@'\">".$s->nisn."</td>
 
-            <!-- 🔥 NIS AMAN -->
+            <!--  NIS AMAN -->
             <td style=\"mso-number-format:'\\@'\">".$s->nis."</td>
 
             <td>".$s->nama."</td>

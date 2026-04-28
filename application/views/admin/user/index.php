@@ -1,6 +1,6 @@
 <h1 class="h3 mb-4 text-gray-800">Manajemen User</h1>
 
-<!-- 🔥 BUTTON TAMBAH -->
+<!--  BUTTON TAMBAH -->
 <a href="<?= base_url('user/tambah') ?>" class="btn btn-primary mb-3">
     + Tambah User
 </a>
@@ -16,7 +16,7 @@ foreach($user as $u){
 }
 ?>
 
-<!-- 🔥 TAB FILTER -->
+<!--  TAB FILTER -->
 <ul class="nav nav-tabs mb-3" id="userTab">
     <li class="nav-item">
         <a class="nav-link active" href="#" onclick="filterUser('all', this)">
@@ -35,7 +35,7 @@ foreach($user as $u){
     </li>
 </ul>
 
-<!-- 🔥 TABEL -->
+<!--  TABEL -->
 <div class="card shadow-sm">
     <div class="card-body">
 
@@ -99,7 +99,7 @@ foreach($user as $u){
 </div>
 
 
-<!-- 🔥 SCRIPT FILTER -->
+<!--  SCRIPT FILTER -->
 <script>
 function filterUser(role, el){
 

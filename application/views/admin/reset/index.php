@@ -58,7 +58,7 @@
             </div>
 
             <button type="submit" class="btn btn-danger btn-lg">
-                🔥 RESET SEKARANG
+                 RESET SEKARANG
             </button>
 
         </form>

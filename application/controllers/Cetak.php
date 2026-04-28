@@ -9,7 +9,7 @@ class Cetak extends CI_Controller {
     public function index($nisn)
     {
         // ======================
-        // 🔥 AMBIL DATA SISWA + KELULUSAN
+        //  AMBIL DATA SISWA + KELULUSAN
         // ======================
         $this->db->select('
             siswa.*,
@@ -32,7 +32,7 @@ if(!$data['siswa']){
     show_404();
 }
 
-// 🔥 BLOCK CETAK JIKA BELUM VERIFIKASI
+//  BLOCK CETAK JIKA BELUM VERIFIKASI
 // if($data['siswa']->status_verifikasi != 'diterima'){
     
 //     $this->session->set_flashdata('error',
@@ -43,12 +43,12 @@ if(!$data['siswa']){
 // }
 
         // ======================
-        // 🔥 AMBIL TEMPLATE SKL
+        //  AMBIL TEMPLATE SKL
         // ======================
         $template = $this->db->get('template_skl')->row();
         $data['template'] = $template;
         // ======================
-// 🔥 AMBIL NILAI SISWA
+//  AMBIL NILAI SISWA
 // ======================
 $this->db->select('
     mata_pelajaran.nama_mapel,
@@ -63,7 +63,7 @@ $this->db->order_by('mata_pelajaran.id','ASC');
 
 $nilai = $this->db->get()->result();
         // ======================
-        // 🔥 AMBIL TANGGAL KELULUSAN
+        //  AMBIL TANGGAL KELULUSAN
         // ======================
         $tgl = $this->db
             ->get_where('pengaturan', ['nama_pengaturan' => 'tanggal_pengumuman'])
@@ -76,16 +76,16 @@ $nilai = $this->db->get()->result();
         $data['tanggal'] = $tanggal;
 
         // ======================
-        // 🔥 FORMAT DATA TAMBAHAN
+        //  FORMAT DATA TAMBAHAN
         // ======================
         $ttl = $data['siswa']->tempat_lahir.', '.strftime('%d %B %Y', strtotime($data['siswa']->tanggal_lahir));
 
         // ======================
-        // 🔥 REPLACE TEMPLATE
+        //  REPLACE TEMPLATE
         // ======================
         $isi = $template->isi;
         // ======================
-// 🔥 AMBIL NILAI SISWA
+//  AMBIL NILAI SISWA
 // ======================
 $this->db->select('
     mata_pelajaran.nama_mapel,
@@ -102,7 +102,7 @@ $nilai = $this->db->get()->result();
 
 
 // ======================
-// 🔥 BUAT TABEL HTML
+//  BUAT TABEL HTML
 // ======================
 $grouped = [];
 
@@ -164,19 +164,19 @@ $isi = str_replace('{status}', strtoupper($data['siswa']->status), $isi);
 $isi = str_replace('{tahun}', $data['siswa']->tahun, $isi);
 $isi = str_replace('{sekolah}', $data['siswa']->nama_sekolah, $isi);
 
-// 🔥 PINDAHKAN KE SINI (SEBELUM MASUK $data)
+//  PINDAHKAN KE SINI (SEBELUM MASUK $data)
 $isi = str_replace('{tabel_nilai}', $html_nilai, $isi);
 
 // baru masuk ke data
 $data['isi'] = $isi;
 $data['k'] = $data['siswa'];
         // ======================
-        // 🔥 LOAD VIEW (PAKAI VIEW ADMIN)
+        //  LOAD VIEW (PAKAI VIEW ADMIN)
         // ======================
         $html = $this->load->view('admin/kelulusan/print', $data, true);
 
         // ======================
-        // 🔥 DOMPDF (VERSI BARU)
+        //  DOMPDF (VERSI BARU)
         // ======================
         require_once FCPATH.'vendor/autoload.php';
 

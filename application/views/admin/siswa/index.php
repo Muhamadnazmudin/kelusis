@@ -16,7 +16,7 @@
 </div>
 <?php endif; ?>
 
-<!-- 🔥 ACTION -->
+<!--  ACTION -->
 <div class="d-flex justify-content-between align-items-center mb-3">
 
     <div>
@@ -80,7 +80,7 @@
 
 </div>
 
-<!-- 🔥 SEARCH + EXPORT -->
+<!--  SEARCH + EXPORT -->
 <div class="d-flex justify-content-between mb-3">
 
     <!-- SEARCH -->
@@ -170,7 +170,7 @@
             </table>
         </div>
 
-        <!-- 🔥 PAGINATION -->
+        <!--  PAGINATION -->
         <div class="mt-3 d-flex justify-content-center">
     <?= $pagination ?? '' ?>
 </div>

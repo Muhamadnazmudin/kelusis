@@ -118,9 +118,9 @@
             <a class="collapse-item <?= $uri=='backup'?'active':'' ?>" href="<?= base_url('backup') ?>">
                 Backup & Restore
             </a>
-            <!-- 🔥 TAMBAHAN RESET -->
+            <!--  TAMBAHAN RESET -->
             <a class="collapse-item <?= $uri=='reset'?'active text-danger':'' ?>" href="<?= base_url('reset') ?>">
-                🔥 Reset Data
+                 Reset Data
             </a>
                 
         </div>

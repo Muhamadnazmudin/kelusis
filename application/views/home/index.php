@@ -21,8 +21,8 @@
         .hero {
     min-height: 100vh;
     display: flex;
-    align-items: flex-start; /* 🔥 ganti ini */
-    padding-top: 60px; /* 🔥 biar lega atasnya */
+    align-items: flex-start; /*  ganti ini */
+    padding-top: 60px; /*  biar lega atasnya */
 }
 
         .logo {
@@ -63,7 +63,7 @@
     background: rgba(255,255,255,0.08);
     border-radius: 12px;
     backdrop-filter: blur(10px);
-    padding: 30px 20px; /* 🔥 atas diperbesar */
+    padding: 30px 20px; /*  atas diperbesar */
 }
 
         .sambutan {
@@ -151,7 +151,7 @@
 }
 .foto-kepsek {
     width: 120px;
-    height: 140px; /* 🔥 agak lonjong */
+    height: 140px; /*  agak lonjong */
     object-fit: cover;
     object-position: center top;
     border-radius: 12px; /* bukan bulat lagi */

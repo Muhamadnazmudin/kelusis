@@ -125,7 +125,7 @@ class Alumni extends CI_Controller {
         }
 
         // ======================
-        // 🔥 FORMAT TANGGAL (AMAN)
+        //  FORMAT TANGGAL (AMAN)
         // ======================
         $tanggal = null;
         $rawTanggal = trim($row['F']);
@@ -139,7 +139,7 @@ class Alumni extends CI_Controller {
         }
 
         // ======================
-        // 🔥 DATA FIX
+        //  DATA FIX
         // ======================
         $data = [
             'nis' => trim($row['A']),
@@ -155,7 +155,7 @@ class Alumni extends CI_Controller {
         ];
 
         // ======================
-        // 🔥 CEK EXIST
+        //  CEK EXIST
         // ======================
         $cek = $this->db->get_where('alumni',['nisn'=>$nisn])->row();
 

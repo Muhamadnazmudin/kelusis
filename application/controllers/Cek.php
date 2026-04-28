@@ -19,7 +19,7 @@ class Cek extends CI_Controller {
         'nisn'=>$nisn
     ])->row();
 
-    // 🔥 VALIDASI WAJIB
+    //  VALIDASI WAJIB
     if(!$siswa){
         $this->session->set_flashdata('error','Data siswa tidak ditemukan!');
         $this->session->sess_destroy(); // logout sekalian
@@ -50,7 +50,7 @@ class Cek extends CI_Controller {
     }
 
     // ======================
-    // 🔥 TAMBAHAN LOG (AMAN - TIDAK MENGUBAH LOGIKA ASLI)
+    //  TAMBAHAN LOG (AMAN - TIDAK MENGUBAH LOGIKA ASLI)
     // ======================
     $cek_log = $this->db->get_where('log_cek', [
         'nisn' => $data['siswa']->nisn
@@ -93,7 +93,7 @@ class Cek extends CI_Controller {
     }
 
     // ======================
-    // 🔥 TAMBAHAN LOG (PENTING)
+    //  TAMBAHAN LOG (PENTING)
     // ======================
     $cek_log = $this->db->get_where('log_cek', [
         'nisn' => $data['siswa']->nisn

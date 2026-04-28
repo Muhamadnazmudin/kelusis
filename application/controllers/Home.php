@@ -23,7 +23,7 @@ class Home extends CI_Controller {
     $data['sambutan'] = $this->M_home->get_pengaturan('sambutan_kepsek');
 
     // ======================
-    // 🔥 TAMBAHAN LULUSAN
+    //  TAMBAHAN LULUSAN
     // ======================
     $data['lulusan_tahun'] = $this->db
         ->select('tahun_lulus, COUNT(*) as jumlah')

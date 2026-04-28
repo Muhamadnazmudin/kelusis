@@ -32,7 +32,7 @@ class Siswa_login extends CI_Controller {
         $file = $this->upload->data('file_name');
         $nisn = $this->session->userdata('nisn');
 
-        // 🔥 hapus file lama (kalau ada)
+        //  hapus file lama (kalau ada)
         $siswa = $this->db->get_where('siswa', ['nisn'=>$nisn])->row();
 
         if(!empty($siswa->bukti_upload)){
@@ -42,7 +42,7 @@ class Siswa_login extends CI_Controller {
             }
         }
 
-        // 🔥 update DB
+        //  update DB
         $this->db->where('nisn',$nisn)->update('siswa',[
             'bukti_upload' => $file,
             'status_verifikasi' => 'pending'
@@ -57,7 +57,7 @@ class Siswa_login extends CI_Controller {
         die;
     }
 
-    // 🔥 BALIK KE HALAMAN HASIL (INI YANG PENTING)
+    //  BALIK KE HALAMAN HASIL (INI YANG PENTING)
     redirect('cek/bylogin');
 }
 }

@@ -45,7 +45,7 @@
             vertical-align: top;
         }
 
-        /* 🔥 KOP */
+        /*  KOP */
         .kop {
             margin-left: -70px;
             margin-right: -70px;
@@ -71,7 +71,7 @@
 
 <?php 
 // ======================
-// 🔥 KOP
+//  KOP
 // ======================
 $base64 = '';
 if(!empty($template->kop_surat)){
@@ -102,12 +102,12 @@ if(!empty($template->kop_surat)){
 
 <?php
 // ======================
-// 🔥 FORMAT DATA
+//  FORMAT DATA
 // ======================
 $ttl = $k->tempat_lahir.', '.strftime('%d %B %Y', strtotime($k->tanggal_lahir));
 
 // ======================
-// 🔥 REPLACE TEMPLATE
+//  REPLACE TEMPLATE
 // ======================
 $isi = $template->isi;
 

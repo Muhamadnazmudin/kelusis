@@ -53,19 +53,19 @@ class Backup extends CI_Controller {
     $file = $_FILES['file']['tmp_name'];
     $isi_sql = file_get_contents($file);
 
-    // 🔥 MATIKAN FK
+    //  MATIKAN FK
     $this->db->query("SET FOREIGN_KEY_CHECKS=0;");
     $this->db->query("SET UNIQUE_CHECKS=0;");
     $this->db->query("SET AUTOCOMMIT=0;");
     $this->db->trans_start();
 
-    // 🔥 OPSIONAL: KOSONGKAN SEMUA TABEL (RECOMMENDED)
+    //  OPSIONAL: KOSONGKAN SEMUA TABEL (RECOMMENDED)
     $tables = $this->db->list_tables();
     foreach ($tables as $table) {
         $this->db->query("TRUNCATE TABLE `$table`");
     }
 
-    // 🔥 PARSE QUERY LEBIH AMAN
+    //  PARSE QUERY LEBIH AMAN
     $queries = preg_split('/;\s*\n/', $isi_sql);
 
     foreach ($queries as $query) {
@@ -75,12 +75,12 @@ class Backup extends CI_Controller {
             try {
                 $this->db->query($query);
             } catch (Exception $e) {
-                // 🔥 skip error biar ga berhenti
+                //  skip error biar ga berhenti
             }
         }
     }
 
-    // 🔥 NYALAKAN LAGI
+    //  NYALAKAN LAGI
     $this->db->trans_complete();
     $this->db->query("SET FOREIGN_KEY_CHECKS=1;");
     $this->db->query("SET UNIQUE_CHECKS=1;");

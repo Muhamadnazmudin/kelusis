@@ -86,7 +86,7 @@ class Import extends CI_Controller {
             continue;
         }
 
-        // 🔥 ambil ID valid
+        //  ambil ID valid
         $id_siswa = $this->db->insert_id();
 
         // ======================
@@ -100,7 +100,7 @@ class Import extends CI_Controller {
         ]);
 
         // ======================
-        // 🔥 AMBIL TANGGAL PENGATURAN
+        //  AMBIL TANGGAL PENGATURAN
         // ======================
         $tgl = $this->db
             ->get_where('pengaturan', ['nama_pengaturan' => 'tanggal_pengumuman'])
@@ -111,7 +111,7 @@ class Import extends CI_Controller {
             : date('Y-m-d');
 
         // ======================
-        // 🔥 INSERT KELULUSAN
+        //  INSERT KELULUSAN
         // ======================
         $this->db->insert('kelulusan', [
             'id_siswa' => $id_siswa,
@@ -171,7 +171,7 @@ class Import extends CI_Controller {
             continue;
         }
 
-        // 🔥 cari siswa
+        //  cari siswa
         $siswa = $this->db->get_where('siswa',['nisn'=>$nisn])->row();
 
         if(!$siswa){
@@ -179,7 +179,7 @@ class Import extends CI_Controller {
             continue;
         }
 
-        // 🔥 ambil semua mapel
+        //  ambil semua mapel
         $mapel = $this->db->get('mata_pelajaran')->result();
 
         $col = 'B'; // mulai dari kolom B

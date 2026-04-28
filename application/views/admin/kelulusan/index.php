@@ -16,7 +16,7 @@
             <i class="fa fa-print"></i> Print Semua
         </a>
 
-        <!-- 🔥 DROPDOWN KELAS -->
+        <!--  DROPDOWN KELAS -->
         <select class="form-control" style="width:200px;"
             onchange="if(this.value) window.open(this.value,'_blank')">
 

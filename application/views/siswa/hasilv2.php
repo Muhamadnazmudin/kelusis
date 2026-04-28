@@ -62,7 +62,7 @@
 
                     <hr>
 
-                    <!-- 🔥 HASIL (DINAMIS + RAPI) -->
+                    <!--  HASIL (DINAMIS + RAPI) -->
                     <h1 id="hasilText" class="result-text"></h1>
                     <div id="infoTambahan"></div>
 
@@ -109,7 +109,7 @@
 
     <?php endif; ?>
 
-    <!-- 🔥 PREVIEW BUKTI -->
+    <!--  PREVIEW BUKTI -->
     <?php if(!empty($siswa->bukti_upload)): ?>
        <div class="mt-4 text-center">
 

@@ -32,7 +32,7 @@ class Nilai extends CI_Controller {
     $query = $this->db->get()->result();
 
     // ======================
-    // 🔥 PIVOT
+    //  PIVOT
     // ======================
     $data_nilai = [];
 
@@ -109,7 +109,7 @@ class Nilai extends CI_Controller {
 }
 public function edit($id)
 {
-    // 🔥 PROSES SIMPAN
+    //  PROSES SIMPAN
     if($_POST){
 
         $mapel = $this->db->get('mata_pelajaran')->result();
@@ -141,7 +141,7 @@ public function edit($id)
     }
 
     // ======================
-    // 🔥 AMBIL DATA UNTUK EDIT
+    //  AMBIL DATA UNTUK EDIT
     // ======================
     $nilai_db = $this->db->get_where('nilai', ['siswa_id'=>$id])->result();
 

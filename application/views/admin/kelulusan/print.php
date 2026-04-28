@@ -219,7 +219,7 @@ if(file_exists($foto_path)){
 <div style="position:absolute; bottom:-25px; left:40px; text-align:center;">
 
 <?php
-$qr_path = FCPATH.'uploads/qr.png'; // 🔥 file QR kamu
+$qr_path = FCPATH.'uploads/qr.png'; //  file QR kamu
 $base64_qr = '';
 
 if(file_exists($qr_path)){

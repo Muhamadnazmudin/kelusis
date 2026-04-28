@@ -169,7 +169,7 @@ function tgl_indo($tanggal){
 
     foreach($grouped as $kelompok => $mapels){
 
-        // 🔥 mapping nama
+        //  mapping nama
         $nama_kelompok = $kelompok;
         if(strtolower($kelompok) == 'umum'){
             $nama_kelompok = 'Kelompok Mata Pelajaran Umum';
@@ -177,7 +177,7 @@ function tgl_indo($tanggal){
             $nama_kelompok = 'Kelompok Mata Pelajaran Kejuruan';
         }
 
-        // 🔥 huruf otomatis
+        //  huruf otomatis
         $huruf = chr(65 + $i); // A, B, C
         $i++;
 
@@ -390,7 +390,7 @@ public function print_by_kelas($id_kelas)
     $tanggal = $tgl ? $this->tgl_indo($tgl->value) : $this->tgl_indo(date('Y-m-d'));
 
     // ======================
-    // 🔥 AMBIL SEMUA MAPEL + NILAI SEKALI
+    //  AMBIL SEMUA MAPEL + NILAI SEKALI
     // ======================
     $this->db->select('
         mata_pelajaran.id as mapel_id,

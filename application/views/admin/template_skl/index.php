@@ -24,7 +24,7 @@
         <b>{tabel_nilai}</b>
     </small>
 
-    <!-- 🔥 INI YANG HILANG -->
+    <!--  INI YANG HILANG -->
     <textarea name="isi" class="form-control" rows="6"><?= $template->isi ?></textarea>
 </div>
     <div class="form-group">

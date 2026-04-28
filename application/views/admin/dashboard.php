@@ -62,7 +62,7 @@
 <div class="row">
 
     <!-- ===================== -->
-    <!-- 🔥 TABEL LULUSAN -->
+    <!--  TABEL LULUSAN -->
     <!-- ===================== -->
     <div class="col-lg-6 mb-4">
 
@@ -112,7 +112,7 @@
                 </div>
 
                 <!-- ===================== -->
-                <!-- 🔥 TIMELINE -->
+                <!--  TIMELINE -->
                 <!-- ===================== -->
                 <hr>
 
@@ -153,7 +153,7 @@
 
 </div>
 
-<!-- 🔥 PROGRESS VERIFIKASI -->
+<!--  PROGRESS VERIFIKASI -->
 <div class="row">
     <div class="col-lg-6 mb-4">
 
@@ -186,7 +186,7 @@
 
     </div>
 
-    <!-- 🔥 INFO CEPAT -->
+    <!--  INFO CEPAT -->
     <div class="col-lg-6 mb-4">
 
         <div class="card shadow">
@@ -211,14 +211,14 @@
     </div>
 </div>
 
-<!-- 🔥 NOTIFIKASI -->
+<!--  NOTIFIKASI -->
 <?php if($this->session->flashdata('success')): ?>
 <div class="alert alert-success">
     <?= $this->session->flashdata('success') ?>
 </div>
 <?php endif; ?>
 
-<!-- 🔥 LOG CEK KELULUSAN -->
+<!--  LOG CEK KELULUSAN -->
 <div class="row">
     <div class="col-lg-12 mb-4">
 
@@ -290,7 +290,7 @@
     </div>
 </div>
 
-<!-- 🔥 SISWA BELUM CEK -->
+<!--  SISWA BELUM CEK -->
 <div class="row">
     <div class="col-lg-12 mb-4">
 

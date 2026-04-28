@@ -176,7 +176,7 @@ function mulaiCek(){
 
     box.style.display = 'flex';
 
-    // 🔥 tampilkan awal dulu
+    //  tampilkan awal dulu
     text.innerHTML = "Memulai...";
 
     let teks = [
@@ -219,7 +219,7 @@ function mulaiCek(){
 
         tampilTeks();
 
-    }, 1000); // 🔥 delay awal
+    }, 1000); //  delay awal
 }
 </script>
 

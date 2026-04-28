@@ -11,17 +11,28 @@ class Home extends CI_Controller {
     }
 
     public function index()
-    {
-        $data = [];
+{
+    $data = [];
 
-        $data['sekolah'] = $this->M_home->get_sekolah();
+    $data['sekolah'] = $this->M_home->get_sekolah();
 
-        $data['pengumuman'] = $this->M_home->get_pengaturan('pengumuman');
-        $data['tanggal_pengumuman'] = $this->M_home->get_pengaturan('tanggal_pengumuman');
-        $data['status_pengumuman'] = $this->M_home->get_pengaturan('status_pengumuman');
+    $data['pengumuman'] = $this->M_home->get_pengaturan('pengumuman');
+    $data['tanggal_pengumuman'] = $this->M_home->get_pengaturan('tanggal_pengumuman');
+    $data['status_pengumuman'] = $this->M_home->get_pengaturan('status_pengumuman');
 
-        $data['sambutan'] = $this->M_home->get_pengaturan('sambutan_kepsek');
+    $data['sambutan'] = $this->M_home->get_pengaturan('sambutan_kepsek');
 
-        $this->load->view('home/index', $data);
-    }
+    // ======================
+    // 🔥 TAMBAHAN LULUSAN
+    // ======================
+    $data['lulusan_tahun'] = $this->db
+        ->select('tahun_lulus, COUNT(*) as jumlah')
+        ->from('alumni')
+        ->group_by('tahun_lulus')
+        ->order_by('tahun_lulus','DESC')
+        ->get()
+        ->result();
+
+    $this->load->view('home/index', $data);
+}
 }

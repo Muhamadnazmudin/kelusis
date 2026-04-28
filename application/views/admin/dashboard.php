@@ -59,6 +59,99 @@
     </div>
 
 </div>
+<div class="row">
+
+    <!-- ===================== -->
+    <!-- 🔥 TABEL LULUSAN -->
+    <!-- ===================== -->
+    <div class="col-lg-6 mb-4">
+
+        <div class="card shadow h-100">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span>Data Lulusan per Tahun</span>
+            </div>
+
+            <div class="card-body">
+
+                <div class="table-responsive">
+                    <table class="table table-bordered table-sm mb-0">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Tahun</th>
+                                <th>Jumlah</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php if(!empty($lulusan_tahun)): ?>
+                                <?php foreach($lulusan_tahun as $t): ?>
+                                <tr>
+                                    <td><b><?= $t->tahun_lulus ?></b></td>
+                                    <td>
+                                        <span class="badge badge-primary">
+                                            <?= $t->jumlah ?> siswa
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <a href="<?= base_url('alumni?tahun='.$t->tahun_lulus) ?>" 
+                                           class="btn btn-info btn-sm">
+                                            Lihat
+                                        </a>
+                                    </td>
+                                </tr>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <tr>
+                                    <td colspan="3" class="text-center text-muted">
+                                        Belum ada data alumni
+                                    </td>
+                                </tr>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- ===================== -->
+                <!-- 🔥 TIMELINE -->
+                <!-- ===================== -->
+                <hr>
+
+                <!-- <h6 class="text-muted">Timeline Lulusan</h6>
+
+                <ul class="list-group list-group-flush">
+                    <?php foreach($lulusan_tahun as $t): ?>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Tahun <?= $t->tahun_lulus ?>
+                        <span class="badge badge-success badge-pill">
+                            <?= $t->jumlah ?>
+                        </span>
+                    </li>
+                    <?php endforeach; ?>
+                </ul> -->
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ===================== -->
+    <!-- 📊 CHART -->
+    <!-- ===================== -->
+    <div class="col-lg-6 mb-4">
+
+        <div class="card shadow h-100">
+            <div class="card-header">
+                Grafik Lulusan per Tahun
+            </div>
+
+            <div class="card-body">
+                <canvas id="chartLulusan" height="120"></canvas>
+            </div>
+        </div>
+
+    </div>
+
+</div>
 
 <!-- 🔥 PROGRESS VERIFIKASI -->
 <div class="row">
@@ -241,3 +334,38 @@
 
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+const ctx = document.getElementById('chartLulusan');
+
+new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: [
+            <?php foreach($lulusan_tahun as $t): ?>
+                "<?= $t->tahun_lulus ?>",
+            <?php endforeach; ?>
+        ],
+        datasets: [{
+            label: 'Jumlah Lulusan',
+            data: [
+                <?php foreach($lulusan_tahun as $t): ?>
+                    <?= $t->jumlah ?>,
+                <?php endforeach; ?>
+            ],
+            backgroundColor: [
+                '#4e73df','#1cc88a','#36b9cc','#f6c23e','#e74a3b'
+            ]
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                display: false
+            }
+        }
+    }
+});
+</script>

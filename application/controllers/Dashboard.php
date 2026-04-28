@@ -65,6 +65,16 @@ class Dashboard extends CI_Controller {
     ->where("siswa.nisn NOT IN (SELECT nisn FROM log_cek)", NULL, FALSE)
     ->get()
     ->result();
+    // ======================
+// 🎓 LULUSAN PER TAHUN (ALUMNI)
+// ======================
+$data['lulusan_tahun'] = $this->db
+    ->select('tahun_lulus, COUNT(*) as jumlah')
+    ->from('alumni')
+    ->group_by('tahun_lulus')
+    ->order_by('tahun_lulus','DESC')
+    ->get()
+    ->result();
     template('admin/dashboard', $data);
 }
 public function reset_log()

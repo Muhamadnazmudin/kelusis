@@ -238,8 +238,47 @@
                 class="btn btn-light btn-sm">
             Lihat Selengkapnya
         </button>
+        <?php if(!empty($lulusan_tahun)): ?>
+<div class="glass-box mt-4">
+
+    <h5 class="text-center mb-3">📊 Statistik Lulusan</h5>
+
+    <div class="row align-items-center">
+
+        <!-- TABEL -->
+        <div class="col-md-6 mb-3">
+            <table class="table table-sm text-white">
+                <thead>
+                    <tr>
+                        <th>Tahun</th>
+                        <th>Jumlah</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach($lulusan_tahun as $t): ?>
+                    <tr>
+                        <td><?= $t->tahun_lulus ?></td>
+                        <td>
+                            <span class="badge badge-light">
+                                <?= $t->jumlah ?> siswa
+                            </span>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- CHART -->
+        <div class="col-md-6">
+            <canvas id="chartHome"></canvas>
+        </div>
+
     </div>
 
+</div>
+<?php endif; ?>
+    </div>
 </div>
         </div>
     </div>
@@ -290,6 +329,43 @@ function toggleSambutan(btn) {
     }
 }
 </script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+<script>
+const ctxHome = document.getElementById('chartHome');
+
+if(ctxHome){
+    new Chart(ctxHome, {
+        type: 'line',
+        data: {
+            labels: [
+                <?php foreach($lulusan_tahun as $t): ?>
+                    "<?= $t->tahun_lulus ?>",
+                <?php endforeach; ?>
+            ],
+            datasets: [{
+                data: [
+                    <?php foreach($lulusan_tahun as $t): ?>
+                        <?= $t->jumlah ?>,
+                    <?php endforeach; ?>
+                ],
+                borderColor: '#ffffff',
+                backgroundColor: 'rgba(255,255,255,0.2)',
+                fill: true,
+                tension: 0.4
+            }]
+        },
+        options: {
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                x: { ticks: { color: '#fff' } },
+                y: { ticks: { color: '#fff' } }
+            }
+        }
+    });
+}
+</script>
 </body>
 </html>

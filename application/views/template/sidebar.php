@@ -90,7 +90,12 @@
             </div>
         </div>
     </li>
-
+<li class="nav-item">
+    <a class="nav-link" href="<?= base_url('alumni') ?>">
+        <i class="fas fa-user-graduate"></i>
+        <span>Alumni</span>
+    </a>
+</li>
     <!-- 🔹 SYSTEM -->
 <div class="sidebar-heading">System</div>
 

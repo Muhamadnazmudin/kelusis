@@ -32,34 +32,40 @@
 
     </div>
 </div>
-<table class="table table-bordered">
-    <tr>
-        <th>No</th>
-        <th>NISN</th>
-        <th>Nama</th>
-        <th>Status</th>
-        <th>Nomor SKL</th>
-        <th>Aksi</th>
-    </tr>
+<div class="table-responsive">
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>NISN</th>
+                <th>Nama</th>
+                <th>Status</th>
+                <th>Nomor SKL</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
 
-    <?php $no=1; foreach($kelulusan as $k): ?>
-    <tr>
-        <td><?= $no++ ?></td>
-        <td><?= $k->nisn ?></td>
-        <td><?= $k->nama ?></td>
-        <td>
-            <?php if($k->status=='lulus'): ?>
-                <span class="badge badge-success">LULUS</span>
-            <?php else: ?>
-                <span class="badge badge-danger">TIDAK</span>
-            <?php endif; ?>
-        </td>
-        <td><?= $k->nomor_skl ?></td>
-        <td>
-            <a href="<?= base_url('kelulusan/edit/'.$k->id) ?>" class="btn btn-warning btn-sm">Edit</a>
-            <a href="<?= base_url('kelulusan/hapus/'.$k->id) ?>" class="btn btn-danger btn-sm">Hapus</a>
-            <a href="<?= base_url('kelulusan/print/'.$k->id) ?>" class="btn btn-success btn-sm" target="_blank">Print</a>
-        </td>
-    </tr>
-    <?php endforeach; ?>
-</table>
+        <tbody>
+        <?php $no=1; foreach($kelulusan as $k): ?>
+        <tr>
+            <td><?= $no++ ?></td>
+            <td><?= $k->nisn ?></td>
+            <td><?= $k->nama ?></td>
+            <td>
+                <?php if($k->status=='lulus'): ?>
+                    <span class="badge badge-success">LULUS</span>
+                <?php else: ?>
+                    <span class="badge badge-danger">TIDAK</span>
+                <?php endif; ?>
+            </td>
+            <td><?= $k->nomor_skl ?></td>
+            <td>
+                <a href="<?= base_url('kelulusan/edit/'.$k->id) ?>" class="btn btn-warning btn-sm">Edit</a>
+                <a href="<?= base_url('kelulusan/hapus/'.$k->id) ?>" class="btn btn-danger btn-sm">Hapus</a>
+                <a href="<?= base_url('kelulusan/print/'.$k->id) ?>" class="btn btn-success btn-sm" target="_blank">Print</a>
+            </td>
+        </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>

@@ -4,9 +4,9 @@
 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
     <!-- Sidebar Toggle -->
-    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-        <i class="fa fa-bars"></i>
-    </button>
+    <button id="sidebarToggle" class="btn btn-link rounded-circle mr-3">
+    <i class="fa fa-bars"></i>
+</button>
 
     <!-- Title -->
     <h5 class="ml-3 mt-2 text-gray-600"><?= isset($title) ? $title : 'Admin Panel' ?></h5>

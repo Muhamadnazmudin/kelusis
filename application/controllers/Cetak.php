@@ -117,7 +117,7 @@ $html_nilai = '<table border="1" width="100%" cellpadding="5" cellspacing="0">
 <th width="20%">Nilai Rerata</th>
 </tr>';
 
-$huruf = ['A','B'];
+$huruf = ['A','B','C','D','E'];
 $i = 0;
 $total = 0;
 $jumlah = 0;
@@ -183,12 +183,16 @@ $data['k'] = $data['siswa'];
         $dompdf = new Dompdf();
 
         $dompdf->loadHtml($html);
-        $dompdf->setPaper('F4', 'portrait');
-        $dompdf->render();
+$dompdf->setPaper('F4', 'portrait');
 
-        // tampilkan di browser
-        $dompdf->stream("SKL-".$data['siswa']->nama.".pdf", [
-            "Attachment" => false
-        ]);
+while (ob_get_level()) {
+    ob_end_clean();
+}
+
+$dompdf->render();
+
+$dompdf->stream("SKL-".$data['siswa']->nama.".pdf", [
+    "Attachment" => false
+]);
     }
 }

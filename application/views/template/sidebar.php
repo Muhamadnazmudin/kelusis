@@ -55,7 +55,12 @@
 
     <!-- 🔹 AKADEMIK -->
     <div class="sidebar-heading">Akademik</div>
-
+        <li class="nav-item <?= $uri=='mapel' ? 'active' : '' ?>">
+    <a class="nav-link" href="<?= base_url('mapel') ?>">
+        <i class="fas fa-book-open"></i>
+        <span>Mata Pelajaran</span>
+    </a>
+</li>
     <li class="nav-item <?= $uri=='nilai' ? 'active' : '' ?>">
         <a class="nav-link" href="<?= base_url('nilai') ?>">
             <i class="fas fa-book"></i>

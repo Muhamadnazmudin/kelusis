@@ -157,12 +157,14 @@ class Import extends CI_Controller {
     $spreadsheet = IOFactory::load($file);
     $sheet = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
 
+    $header = $sheet[1]; // ambil header excel
+
     $berhasil = 0;
     $skip = 0;
 
     foreach($sheet as $i => $row){
 
-        if($i == 1) continue; // skip header
+        if($i == 1) continue;
 
         $nisn = trim($row['A']);
 
@@ -171,7 +173,6 @@ class Import extends CI_Controller {
             continue;
         }
 
-        //  cari siswa
         $siswa = $this->db->get_where('siswa',['nisn'=>$nisn])->row();
 
         if(!$siswa){
@@ -179,39 +180,38 @@ class Import extends CI_Controller {
             continue;
         }
 
-        //  ambil semua mapel
-        $mapel = $this->db->get('mata_pelajaran')->result();
+        // 🔥 LOOP HEADER (bukan urutan mapel lagi)
+        foreach($header as $col => $nama_mapel){
 
-        $col = 'B'; // mulai dari kolom B
+            if($col == 'A') continue; // skip NISN
 
-        foreach($mapel as $m){
+            // cari mapel berdasarkan nama
+            $mapel = $this->db->get_where('mata_pelajaran', [
+                'nama_mapel' => $nama_mapel
+            ])->row();
+
+            if(!$mapel) continue;
 
             $nilai = $row[$col];
 
-            if($nilai === null || $nilai === ''){
-                $col++;
-                continue;
-            }
+            if($nilai === null || $nilai === '') continue;
 
-            // cek existing
             $cek = $this->db->get_where('nilai', [
                 'siswa_id'=>$siswa->id,
-                'mapel_id'=>$m->id
+                'mapel_id'=>$mapel->id
             ])->row();
 
             if($cek){
-                $this->db->where('id',$cek->id)->update('nilai',[
+                $this->db->where('id',$cek->id)->update('nilai', [
                     'nilai'=>$nilai
                 ]);
             } else {
-                $this->db->insert('nilai',[
+                $this->db->insert('nilai', [
                     'siswa_id'=>$siswa->id,
-                    'mapel_id'=>$m->id,
+                    'mapel_id'=>$mapel->id,
                     'nilai'=>$nilai
                 ]);
             }
-
-            $col++;
         }
 
         $berhasil++;

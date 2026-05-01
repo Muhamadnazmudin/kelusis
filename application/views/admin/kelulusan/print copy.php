@@ -6,8 +6,8 @@
 
 body {
     font-family: "Times New Roman", serif;
-    font-size: 14px;
-    line-height: 1.2;
+    font-size: 16px;
+    line-height: 1.3;
     margin: 0;
 }
 
@@ -26,7 +26,6 @@ body {
 
 /* KOP */
 .kop {
-    margin-top: -30px;
     margin-bottom: 3px;
 }
 
@@ -231,7 +230,7 @@ if(file_exists($qr_path)){
 ?>
 
 <?php if($base64_qr): ?>
-    <img src="<?= $base64_qr ?>" width="40"><br>
+    <img src="<?= $base64_qr ?>" width="60"><br>
 <?php endif; ?>
 
 

@@ -206,4 +206,190 @@ public function import()
 
     template('admin/nilai/import');
 }
+
+public function peringkat()
+{
+    // ======================
+    // AMBIL DATA NILAI
+    // ======================
+    $this->db->select('
+        siswa.id,
+        siswa.nama,
+        kelas.nama_kelas as kelas,
+        siswa.jurusan,
+        SUM(nilai.nilai) as total
+    ');
+    $this->db->from('nilai');
+    $this->db->join('siswa', 'siswa.id = nilai.siswa_id');
+    $this->db->join('kelas', 'kelas.id = siswa.id_kelas', 'left');
+    $this->db->group_by('siswa.id');
+    $this->db->order_by('total','DESC');
+
+    $data = $this->db->get()->result();
+
+    // ======================
+    // GLOBAL RANK
+    // ======================
+    $ranking_global = [];
+    $rank = 1;
+
+    foreach($data as $d){
+        $d->rank = $rank++;
+        $ranking_global[] = $d;
+    }
+
+    // ======================
+    // PER KELAS
+    // ======================
+    $ranking_kelas = [];
+
+    foreach($data as $d){
+        $ranking_kelas[$d->kelas][] = $d;
+    }
+
+    foreach($ranking_kelas as $kelas => $list){
+
+        usort($list, function($a,$b){
+            return $b->total <=> $a->total;
+        });
+
+        $rank = 1;
+        foreach($list as $l){
+            $l->rank_kelas = $rank++;
+        }
+
+        $ranking_kelas[$kelas] = $list;
+    }
+
+    // ======================
+    // PER JURUSAN
+    // ======================
+    $ranking_jurusan = [];
+
+    foreach($data as $d){
+        $ranking_jurusan[$d->jurusan][] = $d;
+    }
+
+    foreach($ranking_jurusan as $jurusan => $list){
+
+        usort($list, function($a,$b){
+            return $b->total <=> $a->total;
+        });
+
+        $rank = 1;
+        foreach($list as $l){
+            $l->rank_jurusan = $rank++;
+        }
+
+        $ranking_jurusan[$jurusan] = $list;
+    }
+
+  // ambil list kelas & jurusan unik
+$kelas_list = array_keys($ranking_kelas);
+$jurusan_list = array_keys($ranking_jurusan);
+
+$data_view = [
+    'global' => $ranking_global,
+    'kelas' => $ranking_kelas,
+    'jurusan' => $ranking_jurusan,
+    'kelas_list' => $kelas_list,
+    'jurusan_list' => $jurusan_list
+];
+
+    template('admin/nilai/peringkat', $data_view);
+}
+public function download_peringkat()
+    {
+        // ======================
+        // LOAD DOMPDF (WAJIB)
+        // ======================
+        require_once FCPATH.'vendor/autoload.php';
+
+        // ======================
+        // AMBIL PARAMETER
+        // ======================
+        $mode    = $this->input->get('mode');
+        $kelas   = $this->input->get('kelas');
+        $jurusan = $this->input->get('jurusan');
+
+        // ======================
+        // QUERY DATA
+        // ======================
+        $this->db->select('
+            siswa.nama,
+            kelas.nama_kelas as kelas,
+            siswa.jurusan,
+            SUM(nilai.nilai) as total
+        ');
+        $this->db->from('nilai');
+        $this->db->join('siswa', 'siswa.id = nilai.siswa_id');
+        $this->db->join('kelas', 'kelas.id = siswa.id_kelas', 'left');
+        $this->db->group_by('siswa.id');
+        $this->db->order_by('total','DESC');
+
+        $result = $this->db->get()->result();
+
+        // ======================
+        // FILTER DATA
+        // ======================
+        $data_filtered = [];
+
+        foreach($result as $r){
+
+            if($mode == 'kelas' && $kelas && $r->kelas != $kelas){
+                continue;
+            }
+
+            if($mode == 'jurusan' && $jurusan && $r->jurusan != $jurusan){
+                continue;
+            }
+
+            $data_filtered[] = $r;
+        }
+
+        // ======================
+        // RANKING
+        // ======================
+        $rank = 1;
+        foreach($data_filtered as $d){
+            $d->rank = $rank++;
+        }
+
+        // ======================
+        // DATA KE VIEW
+        // ======================
+        $data = [
+            'data'    => $data_filtered,
+            'mode'    => $mode,
+            'kelas'   => $kelas,
+            'jurusan' => $jurusan
+        ];
+
+        // ======================
+        // LOAD VIEW HTML
+        // ======================
+        $html = $this->load->view('admin/nilai/peringkat_pdf', $data, true);
+
+        // ======================
+        // DOMPDF
+        // ======================
+        $dompdf = new \Dompdf\Dompdf(); // 🔥 paling aman pakai ini
+
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+
+        // 🔥 penting biar ga error "Failed to load PDF"
+        while (ob_get_level()) {
+            ob_end_clean();
+        }
+
+        $dompdf->render();
+
+        // ======================
+        // OUTPUT PDF
+        // ======================
+        $dompdf->stream("peringkat.pdf", [
+            "Attachment" => true
+        ]);
+    }
 }

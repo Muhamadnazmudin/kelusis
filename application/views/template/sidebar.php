@@ -67,7 +67,13 @@
             <span>Nilai</span>
         </a>
     </li>
-
+    
+<li class="nav-item <?= $uri=='nilai/peringkat' ? 'active' : '' ?>">
+    <a class="nav-link" href="<?= base_url('nilai/peringkat') ?>">
+        <i class="fas fa-trophy"></i>
+        <span>Peringkat</span>
+    </a>
+</li>
     <!-- 🔹 SKL -->
     <div class="sidebar-heading">Kelulusan</div>
 

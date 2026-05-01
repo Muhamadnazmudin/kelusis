@@ -69,6 +69,7 @@ thead th {
         <th><?= $m->nama_mapel ?></th>
     <?php endforeach; ?>
 
+    <th>Total Nilai</th>
     <th>Rata-rata</th>
     <th>Aksi</th>
 </tr>
@@ -101,11 +102,17 @@ thead th {
                 <?php endforeach; ?>
 
                 <!--  RATA-RATA -->
-                <td>
-                    <b>
-                    <?= $jumlah ? number_format($total / $jumlah, 2) : '0.00' ?>
-                    </b>
-                </td>
+                <!-- TOTAL NILAI -->
+<td>
+    <b><?= $total ?></b>
+</td>
+
+<!-- RATA-RATA -->
+<td>
+    <b>
+    <?= $jumlah ? number_format($total / $jumlah, 2) : '0.00' ?>
+    </b>
+</td>
 
                 <!--  AKSI -->
                 <td>

@@ -135,7 +135,7 @@ foreach($grouped as $kelompok => $mapels){
         $html_nilai .= '<tr>
             <td align="center">'.$no++.'</td>
             <td>'.$m->nama_mapel.'</td>
-            <td align="center">'.$m->nilai.'</td>
+            <td align="center">'.round((float)$m->nilai).'</td>
         </tr>';
 
         $total += $m->nilai;

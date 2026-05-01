@@ -226,6 +226,9 @@ public function peringkat()
     $this->db->order_by('total','DESC');
 
     $data = $this->db->get()->result();
+    foreach($data as $d){
+    $d->total = round($d->total);
+}
 
     // ======================
     // GLOBAL RANK

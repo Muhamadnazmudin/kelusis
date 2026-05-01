@@ -189,7 +189,7 @@ function tgl_indo($tanggal){
             $html_nilai .= '<tr>
                 <td align="center" style="vertical-align:middle;">'.$no++.'</td>
                 <td>'.$m->nama_mapel.'</td>
-                <td align="center">'.($m->nilai ?? '-').'</td>
+                <td align="center">'.($m->nilai !== null ? round((float)$m->nilai) : '-').'</td>
             </tr>';
         }
     }
@@ -316,7 +316,7 @@ public function print_all()
                 $html_nilai .= '<tr>
                     <td>'.$no++.'</td>
                     <td>'.$m->nama_mapel.'</td>
-                    <td align="center">'.($m->nilai ?? '-').'</td>
+                    <td align="center">'.($m->nilai !== null ? round((float)$m->nilai) : '-').'</td>
                 </tr>';
             }
         }
@@ -490,7 +490,7 @@ public function print_by_kelas($id_kelas)
                 $html_nilai .= '<tr>
                     <td align="center">'.$no++.'</td>
                     <td>'.$m['nama_mapel'].'</td>
-                    <td align="center">'.($m['nilai'] ?? '-').'</td>
+                    <td align="center">'.($m['nilai'] !== null ? round((float)$m['nilai']) : '-').'</td>
                 </tr>';
             }
         }

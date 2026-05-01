@@ -104,7 +104,7 @@ thead th {
                 <!--  RATA-RATA -->
                 <!-- TOTAL NILAI -->
 <td>
-    <b><?= $total ?></b>
+    <b><?= round($total) ?></b>
 </td>
 
 <!-- RATA-RATA -->

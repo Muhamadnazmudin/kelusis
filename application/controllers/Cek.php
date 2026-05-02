@@ -28,6 +28,28 @@ class Cek extends CI_Controller {
     }
 
     $data['siswa'] = $siswa;
+    // ======================
+// 🔥 AMBIL MAPEL
+// ======================
+$data['mapel'] = $this->db
+    ->order_by('id','ASC')
+    ->get('mata_pelajaran')
+    ->result();
+
+// ======================
+// 🔥 AMBIL NILAI SISWA
+// ======================
+$nilai_db = $this->db->get_where('nilai', [
+    'siswa_id' => $siswa->id
+])->result();
+
+$nilai_mapel = [];
+
+foreach($nilai_db as $n){
+    $nilai_mapel[$n->mapel_id] = $n->nilai;
+}
+
+$data['nilai_mapel'] = $nilai_mapel;
 
     $this->load->view('siswa/dashboard', $data);
 }

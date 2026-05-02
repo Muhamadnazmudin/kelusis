@@ -13,15 +13,12 @@ body {
     overflow: hidden;
 }
 
-/* CARD */
 .card-custom {
     border-radius: 15px;
     padding: 30px 20px;
     text-align: center;
-    animation: fadeIn 1s ease;
 }
 
-/* TEXT */
 .title {
     font-weight: 600;
     font-size: 20px;
@@ -32,77 +29,12 @@ body {
     color: #666;
 }
 
-/* BUTTON */
 .btn-check {
     border-radius: 30px;
     padding: 12px;
     font-size: 16px;
-    transition: all 0.3s ease;
 }
 
-.btn-check:hover {
-    transform: scale(1.05);
-}
-
-/* CINEMATIC LOADING */
-#loadingBox {
-    display:none;
-    position:fixed;
-    top:0; left:0;
-    width:100%;
-    height:100%;
-    background:black;
-    color:white;
-    z-index:9999;
-
-    /* pindahin flex ke sini */
-    align-items:center;
-    justify-content:center;
-    flex-direction:column;
-    text-align:center;
-}
-
-/* TEXT LOADING */
-#textLoading {
-    font-size:18px;
-    opacity:1;
-    transition: all 0.5s ease;
-}
-/* DOT ANIMATION */
-.dots::after {
-    content: '';
-    animation: dots 1.5s infinite;
-}
-
-@keyframes dots {
-    0% { content: ''; }
-    33% { content: '.'; }
-    66% { content: '..'; }
-    100% { content: '...'; }
-}
-
-/* FLASH EFFECT */
-.flash {
-    animation: flashWhite 0.4s ease;
-}
-
-@keyframes flashWhite {
-    0% { background:black; }
-    50% { background:white; }
-    100% { background:black; }
-}
-
-/* FADE */
-@keyframes fadeIn {
-    from {opacity:0; transform:translateY(20px);}
-    to {opacity:1; transform:translateY(0);}
-}
-
-/* MOBILE */
-@media (max-width: 576px) {
-    .title { font-size: 18px; }
-    .btn-check { font-size: 15px; }
-}
 #loadingBox {
     display:none;
     position:fixed;
@@ -120,17 +52,38 @@ body {
 }
 
 .big-text {
-    font-size: 40px;
+    font-size: 28px;
     font-weight: bold;
-    letter-spacing: 2px;
-    opacity: 0;
-    transform: scale(0.8);
-    transition: all 0.5s ease;
+    opacity: 1;
+    transition: all 0.4s ease;
 }
 
-.big-text.show {
-    opacity: 1;
-    transform: scale(1);
+.small-text {
+    font-size: 18px;
+    color:#00ffcc;
+    margin-top:10px;
+}
+
+.dots::after {
+    content: '';
+    animation: dots 1.5s infinite;
+}
+
+@keyframes dots {
+    0% { content: ''; }
+    33% { content: '.'; }
+    66% { content: '..'; }
+    100% { content: '...'; }
+}
+
+.flash {
+    animation: flashWhite 0.4s ease;
+}
+
+@keyframes flashWhite {
+    0% { background:black; }
+    50% { background:white; }
+    100% { background:black; }
 }
 </style>
 </head>
@@ -163,63 +116,127 @@ body {
 </div>
 </div>
 
-<!-- CINEMATIC LOADING -->
+<!-- LOADING -->
 <div id="loadingBox">
     <div id="textLoading" class="big-text">Memulai...</div>
+    <div id="subText" class="small-text"></div>
 </div>
 
 <script>
+let daftarMapel = <?= json_encode($mapel ?? []) ?>;
+let daftarNilai = <?= json_encode($nilai_mapel ?? []) ?>;
+
 function mulaiCek(){
 
     let box = document.getElementById('loadingBox');
     let text = document.getElementById('textLoading');
+    let sub = document.getElementById('subText');
 
     box.style.display = 'flex';
 
-    //  tampilkan awal dulu
-    text.innerHTML = "Memulai...";
-
-    let teks = [
+    let tahapAwal = [
         "Memverifikasi Data",
         "Menghubungkan ke Server",
-        "Menghitung Nilai",
+        "Menghitung Nilai"
+    ];
+
+    let tahapAkhir = [
         "Menentukan Kelulusan",
-        "Mohon Bersabar",
-        "Menyiapkan Hasil",
-        "Dikit Lagi",
+        "Tunggu Beberapa Saat Lagi",
+        "...............",
+        ".......",
+        "....",
+        "..",
         "Menampilkan Hasil"
+        
     ];
 
     let i = 0;
 
-    // delay biar "Memulai..." kerasa
-    setTimeout(function(){
+    function tampilAwal(){
+        if(i < tahapAwal.length){
 
-        function tampilTeks(){
-            if(i < teks.length){
+            text.style.opacity = 0;
 
-                text.style.opacity = 0;
+            setTimeout(() => {
+                text.innerHTML = tahapAwal[i] + '<span class="dots"></span>';
+                sub.innerHTML = "";
+                text.style.opacity = 1;
 
-                setTimeout(() => {
-                    text.innerHTML = teks[i] + '<span class="dots"></span>';
-                    text.style.opacity = 1;
+                if(tahapAwal[i] === "Menghitung Nilai"){
+                    setTimeout(tampilMapel, 1000);
+                } else {
                     i++;
-                    setTimeout(tampilTeks, 1200);
-                }, 300);
+                    setTimeout(tampilAwal, 1200);
+                }
 
-            } else {
+            }, 300);
 
-                box.classList.add('flash');
-
-                setTimeout(() => {
-                    window.location.href = "<?= base_url('cek/bylogin') ?>";
-                }, 500);
-            }
         }
+    }
 
-        tampilTeks();
+    // ======================
+    // 🔥 HITUNG MAPEL
+    // ======================
+    let indexMapel = 0;
 
-    }, 1000); //  delay awal
+    function tampilMapel(){
+
+        if(indexMapel < daftarMapel.length){
+
+            let m = daftarMapel[indexMapel];
+            let nilai = daftarNilai[m.id] ?? 0;
+
+            text.style.opacity = 0;
+
+            setTimeout(() => {
+                text.innerHTML = m.nama_mapel;
+
+                text.innerHTML = "Menghitung...";
+sub.innerHTML = m.nama_mapel + " ✔";
+
+                text.style.opacity = 1;
+
+                indexMapel++;
+
+                setTimeout(tampilMapel, 500);
+
+            }, 200);
+
+        } else {
+            tampilAkhir();
+        }
+    }
+
+    let j = 0;
+
+    function tampilAkhir(){
+
+        if(j < tahapAkhir.length){
+
+            text.style.opacity = 0;
+
+            setTimeout(() => {
+                text.innerHTML = tahapAkhir[j] + '<span class="dots"></span>';
+                sub.innerHTML = "";
+                text.style.opacity = 1;
+
+                j++;
+                setTimeout(tampilAkhir, 1200);
+
+            }, 300);
+
+        } else {
+
+            box.classList.add('flash');
+
+            setTimeout(() => {
+                window.location.href = "<?= base_url('cek/bylogin') ?>";
+            }, 500);
+        }
+    }
+
+    tampilAwal();
 }
 </script>
 

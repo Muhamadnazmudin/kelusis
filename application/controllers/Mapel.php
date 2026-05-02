@@ -51,4 +51,42 @@ class Mapel extends CI_Controller {
         $this->session->set_flashdata('success','Mata pelajaran berhasil ditambahkan');
         redirect('mapel');
     }
+    public function hapus($id)
+{
+    $this->db->delete('mata_pelajaran', ['id' => $id]);
+    $this->session->set_flashdata('success', 'Mapel berhasil dihapus');
+    redirect('mapel');
+}
+
+public function update()
+{
+    $data = [
+        'nama_mapel'  => $this->input->post('nama_mapel'),
+        'kelompok_id' => $this->input->post('kelompok_id')
+    ];
+
+    $this->db->where('id', $this->input->post('id'));
+    $this->db->update('mata_pelajaran', $data);
+
+    $this->session->set_flashdata('success', 'Mapel berhasil diupdate');
+    redirect('mapel');
+}
+
+public function hapus_kelompok($id)
+{
+    // 🔒 CEK apakah kelompok masih dipakai mapel
+    $this->db->where('kelompok_id', $id);
+    $cek = $this->db->get('mata_pelajaran')->num_rows();
+
+    if($cek > 0){
+        $this->session->set_flashdata('success', 'Kelompok masih dipakai!');
+        redirect('mapel');
+    }
+
+    // ✅ kalau aman baru hapus
+    $this->db->delete('kelompok_mapel', ['id' => $id]);
+
+    $this->session->set_flashdata('success', 'Kelompok berhasil dihapus');
+    redirect('mapel');
+}
 }

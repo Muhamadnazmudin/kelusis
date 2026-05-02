@@ -222,7 +222,7 @@ setTimeout(function(){
         });
 
     } else {
-        el.innerHTML = "TIDAK LULUS";
+        el.innerHTML = "DATA TIDAK DITEMUKAN";
         el.style.color = "red";
     }
 

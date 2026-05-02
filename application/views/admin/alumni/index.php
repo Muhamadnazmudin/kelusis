@@ -65,5 +65,6 @@
 </tbody>
 </table>
 </div>
-
-<?= $pagination ?>
+<div class="d-flex justify-content-center">
+    <?= $pagination ?>
+</div>

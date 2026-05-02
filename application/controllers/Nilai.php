@@ -289,6 +289,59 @@ public function peringkat()
 
   // ambil list kelas & jurusan unik
 $kelas_list = array_keys($ranking_kelas);
+
+usort($kelas_list, function($a, $b){
+
+    // ======================
+    // 1. URUTAN KELAS (X, XI, XII)
+    // ======================
+    preg_match('/XII|XI|X/', $a, $ma);
+    preg_match('/XII|XI|X/', $b, $mb);
+
+    $mapKelas = ['X'=>10,'XI'=>11,'XII'=>12];
+
+    $kelasA = $mapKelas[$ma[0]] ?? 0;
+    $kelasB = $mapKelas[$mb[0]] ?? 0;
+
+    // ======================
+    // 2. JENIS (KL, MP, PM, PH, ULW)
+    // ======================
+    preg_match('/(KL|MP|PM|PH|ULW)/', $a, $ta);
+    preg_match('/(KL|MP|PM|PH|ULW)/', $b, $tb);
+
+    $orderJenis = [
+        'KL'=>1,
+        'MP'=>2,
+        'PM'=>3,
+        'PH'=>4,
+        'ULW'=>5
+    ];
+
+    $jenisA = $orderJenis[$ta[1]] ?? 99;
+    $jenisB = $orderJenis[$tb[1]] ?? 99;
+
+    // ======================
+    // 3. NOMOR (1,2,3,...)
+    // ======================
+    preg_match('/(\d+)/', $a, $na);
+    preg_match('/(\d+)/', $b, $nb);
+
+    $numA = $na[1] ?? 0;
+    $numB = $nb[1] ?? 0;
+
+    // ======================
+    // SORTING
+    // ======================
+    if($kelasA != $kelasB){
+        return $kelasA <=> $kelasB;
+    }
+
+    if($jenisA != $jenisB){
+        return $jenisA <=> $jenisB;
+    }
+
+    return $numA <=> $numB;
+});
 $jurusan_list = array_keys($ranking_jurusan);
 
 $data_view = [

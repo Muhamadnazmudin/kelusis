@@ -46,7 +46,10 @@
         <label>Nama Penandatangan</label>
         <input type="text" name="nama" class="form-control" value="<?= $template->nama_penandatangan ?>">
     </div>
-
+        <div class="form-group">
+    <label>Golongan</label>
+    <input type="text" name="golongan" class="form-control" value="<?= $template->golongan ?? '' ?>">
+</div>
     <div class="form-group">
         <label>NIP</label>
         <input type="text" name="nip" class="form-control" value="<?= $template->nip ?>">

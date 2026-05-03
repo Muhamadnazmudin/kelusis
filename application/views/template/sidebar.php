@@ -101,6 +101,29 @@
             </div>
         </div>
     </li>
+    <!-- 🔹 TRANSKRIP -->
+<div class="sidebar-heading">Transkrip</div>
+
+<li class="nav-item <?= in_array($uri, ['transkrip','template_transkrip']) ? 'active' : '' ?>">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#transkripMenu">
+        <i class="fas fa-file-alt"></i>
+        <span>Transkrip Nilai</span>
+    </a>
+
+    <div id="transkripMenu" class="collapse <?= in_array($uri, ['transkrip','template_transkrip']) ? 'show' : '' ?>">
+        <div class="bg-white py-2 collapse-inner rounded">
+
+            <a class="collapse-item <?= $uri=='transkrip'?'active':'' ?>" href="<?= base_url('transkrip') ?>">
+                Data Transkrip
+            </a>
+
+            <a class="collapse-item <?= $uri=='template_transkrip'?'active':'' ?>" href="<?= base_url('template_transkrip') ?>">
+                Template Transkrip
+            </a>
+
+        </div>
+    </div>
+</li>
 <li class="nav-item">
     <a class="nav-link" href="<?= base_url('alumni') ?>">
         <i class="fas fa-user-graduate"></i>

@@ -2,10 +2,10 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Nilai extends CI_Controller {
-
     public function __construct()
     {
         parent::__construct();
+        $this->load->helper('tanggal');
 
         if(!$this->session->userdata('role') || $this->session->userdata('role') != 'admin'){
             redirect('login');
@@ -448,4 +448,342 @@ public function download_peringkat()
             "Attachment" => true
         ]);
     }
+    public function transkrip($nisn)
+{
+    $siswa = $this->db->get_where('siswa', ['nisn'=>$nisn])->row();
+
+    if(!$siswa){
+        show_404();
+    }
+
+    // ======================
+    // AMBIL MAPEL + NILAI
+    // ======================
+    $this->db->select('
+        mata_pelajaran.nama_mapel,
+        nilai.nilai
+    ');
+    $this->db->from('mata_pelajaran');
+    $this->db->join(
+        'nilai',
+        'nilai.mapel_id = mata_pelajaran.id AND nilai.siswa_id = '.$siswa->id,
+        'left'
+    );
+
+    $mapel_db = $this->db->get()->result();
+
+    // ======================
+    // INDEX BIAR CEPAT
+    // ======================
+    $mapel_index = [];
+    foreach($mapel_db as $m){
+        $mapel_index[strtolower(trim($m->nama_mapel))] = $m;
+    }
+
+    // ======================
+    // URUTAN FIX
+    // ======================
+    $urutan = [
+        'Pendidikan Agama dan Budi Pekerti',
+        'Pendidikan Pancasila',
+        'Bahasa Indonesia',
+        'Pendidikan Jasmani Olahraga dan Kesehatan',
+        'Sejarah',
+        'Seni Budaya',
+        'Muatan Lokal',
+        'Matematika',
+        'Bahasa Inggris',
+        'Informatika',
+        'Projek Ilmu Pengetahuan Alam dan Sosial',
+        'Dasar-dasar Program Keahlian',
+        'Konsentrasi Keahlian',
+        'Projek Kreatif dan Kewirausahaan',
+        'Praktik Kerja Lapangan',
+        'Mata Pelajaran Pilihan'
+    ];
+
+    // ======================
+    // ALIAS
+    // ======================
+    $alias = [
+        'seni budaya' => 'seni rupa',
+        'projek ilmu pengetahuan alam dan sosial' => 'projek ipas',
+        'dasar-dasar program keahlian' => 'dasar-dasar kejuruan',
+        'projek kreatif dan kewirausahaan' => 'kreatifitas, inovasi, dan kewirausahaan'
+    ];
+
+    // ======================
+    // KIRIM KE VIEW
+    // ======================
+    $data = [
+        'siswa' => $siswa,
+        'mapel_index' => $mapel_index,
+        'urutan' => $urutan,
+        'alias' => $alias
+    ];
+
+    $this->load->view('admin/transkrip/preview', $data);
+}
+public function transkrip_pdf($nisn)
+{
+    require_once FCPATH.'vendor/autoload.php';
+
+    // ======================
+    // AMBIL DATA SISWA
+    // ======================
+    $siswa = $this->db->get_where('siswa', ['nisn'=>$nisn])->row();
+
+    if(!$siswa){
+        show_404();
+    }
+
+    // ======================
+    // TEMPLATE SKL (KOP & TTD)
+    // ======================
+    $template = $this->db->get('template_skl')->row();
+    $template_tr  = $this->db->get('template_transkrip')->row();
+
+    // ======================
+    // AMBIL MAPEL + NILAI (SEKALI QUERY)
+    // ======================
+    $this->db->select('
+        mata_pelajaran.id,
+        mata_pelajaran.nama_mapel,
+        nilai.nilai
+    ');
+    $this->db->from('mata_pelajaran');
+    $this->db->join(
+        'nilai',
+        'nilai.mapel_id = mata_pelajaran.id AND nilai.siswa_id = '.$siswa->id,
+        'left'
+    );
+
+    $mapel_db = $this->db->get()->result();
+
+    // ======================
+    // INDEX MAPEL (BIAR CEPAT)
+    // ======================
+    $mapel_index = [];
+    foreach($mapel_db as $m){
+        $mapel_index[strtolower(trim($m->nama_mapel))] = $m;
+    }
+
+    // ======================
+    // URUTAN FIX
+    // ======================
+    $urutan = [
+        'Pendidikan Agama dan Budi Pekerti',
+        'Pendidikan Pancasila',
+        'Bahasa Indonesia',
+        'Pendidikan Jasmani Olahraga dan Kesehatan',
+        'Sejarah',
+        'Seni Budaya',
+        'Muatan Lokal',
+        'Matematika',
+        'Bahasa Inggris',
+        'Informatika',
+        'Projek Ilmu Pengetahuan Alam dan Sosial',
+        'Dasar-dasar Program Keahlian',
+        'Konsentrasi Keahlian',
+        'Projek Kreatif dan Kewirausahaan',
+        'Praktik Kerja Lapangan',
+        'Mata Pelajaran Pilihan'
+    ];
+
+    // ======================
+    // ALIAS MAPEL (PENTING)
+    // ======================
+    $alias = [
+        'seni budaya' => 'seni rupa',
+        'projek ilmu pengetahuan alam dan sosial' => 'projek ipas',
+        'dasar-dasar program keahlian' => 'dasar-dasar kejuruan',
+        'projek kreatif dan kewirausahaan' => 'kreatifitas, inovasi, dan kewirausahaan'
+    ];
+
+    // ======================
+    // BUAT TABEL
+    // ======================
+    $html_nilai = '<table class="table">
+    <tr>
+        <th width="5%">No</th>
+        <th>Mata Pelajaran</th>
+        <th width="20%">Nilai</th>
+    </tr>';
+
+    $no = 1;
+    $total = 0;
+    $jumlah = 0;
+
+    foreach($urutan as $nama){
+
+        $key = strtolower($nama);
+
+        // ======================
+        // MUATAN LOKAL
+        // ======================
+        if($key == 'muatan lokal'){
+
+            $html_nilai .= '<tr>
+                <td align="center">'.$no++.'</td>
+                <td>Muatan Lokal</td>
+                <td></td>
+            </tr>';
+
+            $sub = ['bahasa sunda','potensi daerah'];
+            $huruf = ['a','b'];
+
+            foreach($sub as $i => $s){
+
+                $m = $mapel_index[$s] ?? null;
+
+                $nilai = ($m && $m->nilai !== null)
+                    ? round($m->nilai)
+                    : '-';
+
+                if($nilai !== '-'){
+                    $total += $nilai;
+                    $jumlah++;
+                }
+
+                $html_nilai .= '<tr>
+                    <td></td>
+                    <td style="padding-left:20px;">'.$huruf[$i].'. '.ucwords($s).'</td>
+                    <td align="center">'.$nilai.'</td>
+                </tr>';
+            }
+
+            continue;
+        }
+
+        // ======================
+        // HANDLE ALIAS
+        // ======================
+        $search = $alias[$key] ?? $key;
+
+        $m = $mapel_index[$search] ?? null;
+
+        $nilai = ($m && $m->nilai !== null)
+            ? round($m->nilai)
+            : '-';
+
+        if($nilai !== '-'){
+            $total += $nilai;
+            $jumlah++;
+        }
+
+        $html_nilai .= '<tr>
+            <td align="center">'.$no++.'</td>
+            <td>'.$nama.'</td>
+            <td align="center">'.$nilai.'</td>
+        </tr>';
+    }
+
+    // ======================
+    // RATA-RATA
+    // ======================
+    $rata = $jumlah ? $total / $jumlah : 0;
+
+    $html_nilai .= '
+    <tr>
+        <td colspan="2" align="center"><b>Rata-rata</b></td>
+        <td align="center"><b>'.number_format($rata, 2).'</b></td>
+    </tr>
+    </table>';
+
+    // ======================
+    // DATA KE VIEW
+    // ======================
+    $data = [
+    'siswa'        => $siswa,
+    'template_skl' => $template,     // untuk kop & ttd
+    'template_tr'  => $template_tr,  // untuk nomor
+    'tabel'        => $html_nilai
+];
+
+    // ======================
+    // LOAD VIEW
+    // ======================
+    $html = $this->load->view('admin/transkrip/print', $data, true);
+
+    // ======================
+    // DOMPDF
+    // ======================
+    $dompdf = new \Dompdf\Dompdf();
+
+    $dompdf->loadHtml($html);
+    $dompdf->setPaper('F4', 'portrait');
+
+    while (ob_get_level()) ob_end_clean();
+
+    $dompdf->render();
+
+    $dompdf->stream("transkrip_".$siswa->nama.".pdf", [
+        "Attachment" => false
+    ]);
+}
+public function download_transkrip()
+{
+    require_once FCPATH.'vendor/autoload.php';
+
+    $mode    = $this->input->get('mode');
+    $kelas   = $this->input->get('kelas');
+    $jurusan = $this->input->get('jurusan');
+
+    // ======================
+    // AMBIL DATA SISWA
+    // ======================
+    $this->db->from('siswa');
+
+    if($mode == 'kelas' && $kelas){
+        $this->db->join('kelas','kelas.id = siswa.id_kelas');
+        $this->db->where('kelas.nama_kelas', $kelas);
+    }
+
+    if($mode == 'jurusan' && $jurusan){
+        $this->db->where('jurusan', $jurusan);
+    }
+
+    $siswa_list = $this->db->get()->result();
+
+    // ======================
+    // LOAD TEMPLATE SKL
+    // ======================
+    $template = $this->db->get('template_skl')->row();
+    $template_tr = $this->db->get('template_transkrip')->row();
+
+    // ======================
+    // LOOP SEMUA SISWA
+    // ======================
+    $html = '';
+
+    foreach($siswa_list as $siswa){
+
+        // panggil function existing kamu (biar reuse logic)
+        $html .= $this->load->view('admin/transkrip/print', [
+            'siswa' => $siswa,
+            'template' => $template,
+            'template_tr' => $template_tr,
+            'tabel' => $this->generate_tabel_nilai($siswa->id)
+        ], true);
+
+        $html .= '<div style="page-break-after: always;"></div>';
+    }
+
+    // ======================
+    // DOMPDF
+    // ======================
+    $dompdf = new \Dompdf\Dompdf();
+
+    $dompdf->loadHtml($html);
+    $dompdf->setPaper('F4', 'portrait');
+
+    while (ob_get_level()) ob_end_clean();
+
+    $dompdf->render();
+
+    $dompdf->stream("transkrip_massal.pdf", [
+        "Attachment" => true
+    ]);
+}
+
 }

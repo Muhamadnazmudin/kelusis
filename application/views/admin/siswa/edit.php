@@ -89,6 +89,11 @@
             <?php endforeach; ?>
         </select>
     </div>
+    <div class="form-group">
+    <label>Nomor Ijazah</label>
+    <input type="text" name="nomor_ijazah" class="form-control"
+        value="<?= $siswa->nomor_ijazah ?? '' ?>">
+</div>
 <div class="form-group">
     <label>Foto Siswa</label>
 

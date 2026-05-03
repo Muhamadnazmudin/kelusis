@@ -21,12 +21,12 @@ body {
     font-weight: bold;
     font-size: 15px;
     border-bottom: 2px solid black;
-    padding-bottom: 3px;
+    padding-bottom: 5px;
 }
 
 /* KOP */
 .kop {
-    margin-top: -30px;
+    margin-top: 10px;
     margin-bottom: 3px;
 }
 
@@ -132,7 +132,7 @@ if(!empty($template->kop_surat)){
     <?php endif; ?>
 </div>
 
-<div class="header-skl center" style="margin-top:-25px;">
+<div class="header-skl center" style="margin-top:15px;">
     <div class="judul">SURAT KETERANGAN LULUS</div>
     <p style="margin:3px 0;">Nomor: <?= $template->nomor_skl ?></p>
 </div>

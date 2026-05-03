@@ -60,3 +60,4 @@ $route['cek/hasil'] = 'cek/hasil';
 
 $route['admin'] = 'dashboard';
 $route['cetak/(:any)'] = 'cetak/index/$1';
+$route['transkrip_list'] = 'transkrip';

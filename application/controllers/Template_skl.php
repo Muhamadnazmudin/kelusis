@@ -40,6 +40,7 @@ class Template_skl extends CI_Controller {
         'tempat_tanggal' => $this->input->post('tempat'),
         'jabatan' => $this->input->post('jabatan'),
         'nama_penandatangan' => $this->input->post('nama'),
+        'golongan' => $this->input->post('golongan'),
         'nip' => $this->input->post('nip')
     ];
 

@@ -32,6 +32,23 @@
     </div>
 
 </div>
+<div class="col-md-6">
+    <div class="card shadow-sm mb-4 border-left-warning">
+        <div class="card-body">
+            <h5 class="text-warning">
+                <i class="fa fa-id-card"></i> Import Nomor Ijazah
+            </h5>
+
+            <form method="post" action="<?= base_url('siswa/import_ijazah') ?>" enctype="multipart/form-data">
+                <input type="file" name="file" class="form-control mb-2" required>
+
+                <button class="btn btn-warning btn-block">
+                    Upload Nomor Ijazah
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
 
 <!-- ================= IMPORT & UPLOAD ================= -->
 <div class="row">
@@ -116,6 +133,7 @@
                         <th>Nama</th>
                         <th>Kelas</th>
                         <th>Tahun</th>
+                        <th>Nomor Ijazah</th>
                         <th width="150">Aksi</th>
                     </tr>
                 </thead>
@@ -133,6 +151,7 @@
                         <td><?= $s->nama ?></td>
                         <td><?= $s->nama_kelas ?></td>
                         <td><?= $s->tahun ?></td>
+                        <td><?= $s->nomor_ijazah ?? '-' ?></td>
 
                         <td class="text-center">
 

@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-
+use PhpOffice\PhpSpreadsheet\IOFactory;
 class Siswa extends CI_Controller {
 
     public function __construct()
@@ -217,6 +217,7 @@ class Siswa extends CI_Controller {
             'rata_nilai' => $this->input->post('rata_nilai'),
             'id_kelas' => $this->input->post('kelas'),
             'id_tahun' => $this->input->post('tahun'),
+            'nomor_ijazah' => $this->input->post('nomor_ijazah'),
             'foto' => $foto //  WAJIB
         ]);
 
@@ -409,5 +410,49 @@ public function export_excel()
     echo "</table>";
 
     exit;
+}
+public function import_ijazah()
+{
+    if(isset($_FILES['file']['name'])){
+
+        $file = $_FILES['file']['tmp_name'];
+
+        $spreadsheet = IOFactory::load($file);
+        $sheet = $spreadsheet->getActiveSheet();
+        $rows = $sheet->toArray(null, true, true, true);
+
+        $berhasil = 0;
+        $gagal = 0;
+
+        foreach($rows as $i => $row){
+
+            if($i == 1) continue; // skip header
+
+            $nisn  = trim($row['A'] ?? '');
+            $nomor = trim($row['B'] ?? '');
+
+            if(empty($nisn) || empty($nomor)) continue;
+
+            // VALIDASI
+            $siswa = $this->db->get_where('siswa',['nisn'=>$nisn])->row();
+
+            if($siswa){
+
+                $this->db->where('nisn',$nisn)->update('siswa', [
+                    'nomor_ijazah' => $nomor
+                ]);
+
+                $berhasil++;
+            } else {
+                $gagal++;
+            }
+        }
+
+        $this->session->set_flashdata('success',
+            "Import selesai: $berhasil berhasil, $gagal gagal"
+        );
+
+        redirect('siswa');
+    }
 }
 }

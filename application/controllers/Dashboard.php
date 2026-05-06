@@ -1,12 +1,13 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+use Dompdf\Dompdf;
 
 class Dashboard extends CI_Controller {
 
     public function __construct()
     {
         parent::__construct();
-
+        
         // 🔐 CEK LOGIN
         if(!$this->session->userdata('role') || $this->session->userdata('role') != 'admin'){
             redirect('login');
@@ -53,7 +54,7 @@ class Dashboard extends CI_Controller {
     // ======================
     $data['log_terbaru'] = $this->db
         ->order_by('waktu','DESC')
-        ->limit(10)
+        ->limit(501)
         ->get('log_cek')
         ->result();
 
@@ -90,5 +91,38 @@ public function reset_log()
     $this->session->set_flashdata('success','Log cek kelulusan berhasil direset');
 
     redirect('dashboard');
+}
+public function download_belum_cek()
+{
+    // ambil data
+    $data['belum_cek'] = $this->db
+        ->select('siswa.*, kelas.nama_kelas')
+        ->from('siswa')
+        ->join('kelas','kelas.id = siswa.id_kelas','left')
+        ->where("siswa.nisn NOT IN (SELECT nisn FROM log_cek)", NULL, FALSE)
+        ->get()
+        ->result();
+
+    // load view
+    $html = $this->load->view('admin/pdf_belum_cek', $data, true);
+
+    // DOMPDF (sama persis kayak Cetak.php)
+    require_once FCPATH.'vendor/autoload.php';
+
+    $dompdf = new Dompdf();
+
+    $dompdf->loadHtml($html);
+    $dompdf->setPaper('A4', 'portrait');
+
+    // penting biar ga error blank
+    while (ob_get_level()) {
+        ob_end_clean();
+    }
+
+    $dompdf->render();
+
+    $dompdf->stream("siswa_belum_cek.pdf", [
+        "Attachment" => true
+    ]);
 }
 }

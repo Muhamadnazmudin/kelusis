@@ -240,6 +240,10 @@
                 <?php 
                 $persen_cek = $total_siswa ? round(($jumlah_sudah_cek / $total_siswa) * 100) : 0;
                 ?>
+                <?php 
+$persen_cek = $total_siswa ? round(($jumlah_sudah_cek / $total_siswa) * 100) : 0;
+$jumlah_belum_cek = $total_siswa - $jumlah_sudah_cek;
+?>
 
                 <div class="mb-3">
                     <span class="badge badge-primary">
@@ -298,6 +302,15 @@
 
             <div class="card-header">
                 Siswa Belum Cek Kelulusan
+                <div class="mb-3">
+    <span class="badge badge-danger">
+        Belum cek: <?= $jumlah_belum_cek ?> siswa
+    </span>
+</div>
+<a href="<?= base_url('dashboard/download_belum_cek') ?>" 
+   class="btn btn-sm btn-primary mb-3">
+   Download PDF
+</a>
             </div>
 
             <div class="card-body">
